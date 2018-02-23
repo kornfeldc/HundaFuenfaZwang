@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "303518624747",
+    "firebase_url": "https://hundatfuenfazwang.firebaseio.com",
+    "project_id": "hundatfuenfazwang",
+    "storage_bucket": "hundatfuenfazwang.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303518624747:android:3976459c85b3f87f",
+        "android_client_info": {
+          "package_name": "hfz.svoeoggau.at.hundatfuenfazwanzg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303518624747-p1plj5eqmcqc0akiirrpopkm1jrhntnj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx6TeCv1sDjAW3LBUDITCtDDaTjGRVJHo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
