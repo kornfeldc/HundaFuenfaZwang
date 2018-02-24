@@ -4,9 +4,12 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,21 +24,11 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 
 public class Person extends DbObj {
 
-    public static final String COLLECTION = "articles";
-    public static final String FIELD_FIRSTNAME = "firstName";
-    public static final String FIELD_LASTNAME = "lastName";
+    public static final String COLLECTION = "persons";
 
-    private String id = "";
     private String firstName="";
     private String lastName = "";
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -53,26 +46,19 @@ public class Person extends DbObj {
         this.lastName = lastName;
     }
 
-    public void parseMap(String id, Map<String,Object> map) {
-        setId(id);
-        setFirstName(map.get(FIELD_FIRSTNAME).toString());
-        setLastName(map.get(FIELD_LASTNAME).toString());
-    }
-
-    private Map<String, Object> getMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put(FIELD_FIRSTNAME, getFirstName());
-        map.put(FIELD_LASTNAME, getLastName());
-        return map;
-    }
 
     public void save() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        if(id != "")
-            db.collection(COLLECTION).document(id).set(getMap());
+        if(isIdSet())
+            db.collection(COLLECTION).document(getId()).set(this);
         else
-            db.collection(COLLECTION).add(getMap());
+            db.collection(COLLECTION).add(this).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    setReference(documentReference);
+                }
+            });
     }
 
     public static void getById(String id, final OnLoadSingle ols) {
@@ -84,8 +70,8 @@ public class Person extends DbObj {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()) {
-                            Person person = new Person();
-                            person.parseMap(documentSnapshot.getId(), documentSnapshot.getData());
+                            Person person = documentSnapshot.toObject(Person.class);
+                            person.setReference(documentSnapshot.getReference());
                             ols.callback(person);
                         }
                         else
@@ -100,12 +86,12 @@ public class Person extends DbObj {
                 });
     }
 
-    public static void search(String name, final OnLoadList oll) {
+    public static void search(String lastName, String firstName, final OnLoadList oll) {
         //todo like name
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION)
-                .orderBy(FIELD_LASTNAME)
-                .orderBy(FIELD_FIRSTNAME)
+                .whereEqualTo("lastName", lastName)
+                .whereEqualTo("firstName", firstName)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -113,8 +99,8 @@ public class Person extends DbObj {
                         List<Object> list = new Vector<>();
                         if(!documentSnapshots.isEmpty()) {
                             for(DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
-                                Person person = new Person();
-                                person.parseMap(documentSnapshot.getId(), documentSnapshot.getData());
+                                Person person = documentSnapshot.toObject(Person.class);
+                                person.setReference(documentSnapshot.getReference());
                                 list.add(person);
                             }
                         }

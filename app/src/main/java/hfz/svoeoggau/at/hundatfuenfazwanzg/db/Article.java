@@ -4,9 +4,11 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,22 +24,10 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 public class Article extends DbObj {
 
     public static final String COLLECTION = "articles";
-    public static final String FIELD_TITLE = "title";
-    public static final String FIELD_PRICE = "price";
-    public static final String FIELD_CATEGORY = "category";
 
-    private String id = "";
     private String title="";
     private double price = 0.0;
     private String category = "";
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -63,28 +53,26 @@ public class Article extends DbObj {
         this.category = category;
     }
 
-    public void parseMap(String id, Map<String,Object> map) {
-        setId(id);
-        setTitle(map.get(FIELD_TITLE).toString());
-        setCategory(map.get(FIELD_CATEGORY).toString());
-        setPrice(Double.parseDouble(map.get(FIELD_PRICE).toString()));
-    }
-
-    private Map<String, Object> getMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put(FIELD_TITLE, getTitle());
-        map.put(FIELD_PRICE, getPrice());
-        map.put(FIELD_CATEGORY, getCategory());
-        return map;
-    }
 
     public void save() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        if(id != "")
-            db.collection(COLLECTION).document(id).set(getMap());
+        if(isIdSet())
+            db.collection(COLLECTION).document(getId()).set(this, SetOptions.merge());
         else
-            db.collection(COLLECTION).add(getMap());
+            db.collection(COLLECTION).add(this)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        setReference(documentReference);
+                    }
+                })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            String s = e.getMessage();
+                        }
+                    });
     }
 
     public static void getById(String id, final OnLoadSingle ols) {
@@ -96,8 +84,8 @@ public class Article extends DbObj {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()) {
-                            Article article = new Article();
-                            article.parseMap(documentSnapshot.getId(), documentSnapshot.getData());
+                            Article article = documentSnapshot.toObject(Article.class);
+                            article.setReference(documentSnapshot.getReference());
                             ols.callback(article);
                         }
                         else
@@ -112,12 +100,11 @@ public class Article extends DbObj {
                 });
     }
 
-    public static void getByCategory(String category, final OnLoadList oll) {
+    public static void getAll(final OnLoadList oll) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION)
-                .whereEqualTo(FIELD_CATEGORY, category)
-                .orderBy(FIELD_CATEGORY)
-                .orderBy(FIELD_TITLE)
+                .orderBy("category")
+                .orderBy("title")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -125,8 +112,36 @@ public class Article extends DbObj {
                         List<Object> list = new Vector<>();
                         if(!documentSnapshots.isEmpty()) {
                             for(DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
-                                Article article = new Article();
-                                article.parseMap(documentSnapshot.getId(), documentSnapshot.getData());
+                                Article article = documentSnapshot.toObject(Article.class);
+                                article.setReference(documentSnapshot.getReference());
+                                list.add(article);
+                            }
+                        }
+                        oll.callback(list);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        oll.callback(null);
+                    }
+                });
+    }
+
+    public static void getByCategory(String category, final OnLoadList oll) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(COLLECTION)
+                .whereEqualTo("category", category)
+                .orderBy("title")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        List<Object> list = new Vector<>();
+                        if(!documentSnapshots.isEmpty()) {
+                            for(DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
+                                Article article = documentSnapshot.toObject(Article.class);
+                                article.setReference(documentSnapshot.getReference());
                                 list.add(article);
                             }
                         }
