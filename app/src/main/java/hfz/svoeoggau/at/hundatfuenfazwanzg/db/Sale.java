@@ -1,6 +1,7 @@
 package hfz.svoeoggau.at.hundatfuenfazwanzg.db;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,8 +34,9 @@ public class Sale extends DbObj {
     private Double given = 0.0;
     private Double tip = 0.0;
     private Date payedDate;
-    private boolean payed = false;
+    private boolean isPayed = false;
     private String articlesText = "";
+    private String personName = "";
 
     private List<SaleArticle> articles = new Vector<>();
     private DocumentReference person;
@@ -80,11 +82,19 @@ public class Sale extends DbObj {
     }
 
     public boolean isPayed() {
-        return payed;
+        return isPayed;
     }
 
     public void setPayed(boolean payed) {
-        this.payed = payed;
+        this.isPayed = payed;
+    }
+
+    public String getPersonName() {
+        return personName;
+    }
+
+    public void setPersonName(String personName) {
+        this.personName = personName;
     }
 
     public String getArticlesText() {
@@ -142,7 +152,10 @@ public class Sale extends DbObj {
 
     public static Sale newSale(Person person) {
         Sale sale = new Sale();
-        sale.setPerson(person.getReference());
+        if(person != null) {
+            sale.setPerson(person.getReference());
+            sale.setPersonName(person.getName());
+        }
         sale.setDay(new Date());
         return sale;
     }
@@ -186,4 +199,34 @@ public class Sale extends DbObj {
         setGiven(given);
         setTip(tip);
     }
+
+    public void loadSales(final OnLoadList oll) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(COLLECTION)
+                .whereEqualTo("isPayed", false)
+                .orderBy("personName")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        List<Object> list = new Vector<>();
+                        if(!documentSnapshots.isEmpty()) {
+                            for(DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
+                                Sale sale = documentSnapshot.toObject(Sale.class);
+                                sale.setReference(documentSnapshot.getReference());
+                                list.add(sale);
+                            }
+                        }
+                        oll.callback(list);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("hfz", "Error loading sales", e);
+                    }
+                });
+    }
+
+
 }

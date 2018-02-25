@@ -28,7 +28,7 @@ public class Person extends DbObj {
 
     private String firstName="";
     private String lastName = "";
-
+    private Boolean isMember = false;
 
     public String getFirstName() {
         return firstName;
@@ -46,6 +46,22 @@ public class Person extends DbObj {
         this.lastName = lastName;
     }
 
+    public String getName() {
+        if(!firstName.isEmpty() && !lastName.isEmpty()) {
+            return firstName + " " + lastName;
+        }
+        else if(!firstName.isEmpty())
+            return firstName;
+        return lastName;
+    }
+
+    public Boolean getMember() {
+        return isMember;
+    }
+
+    public void setMember(Boolean member) {
+        isMember = member;
+    }
 
     public void save() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
