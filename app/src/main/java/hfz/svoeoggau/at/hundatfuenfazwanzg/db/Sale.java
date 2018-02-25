@@ -26,12 +26,17 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 public class Sale extends DbObj {
 
     public static final String COLLECTION = "sales";
-    public static final String ARTICLES_COLLECTION = "articles";
 
     private Date day;
 
-    private Double sum;
-    private List<DocumentReference> articles;
+    private Double sum = 0.0;
+    private Double given = 0.0;
+    private Double tip = 0.0;
+    private Date payedDate;
+    private boolean payed = false;
+    private String articlesText = "";
+
+    private List<SaleArticle> articles = new Vector<>();
     private DocumentReference person;
 
     public Date getDay() {
@@ -58,12 +63,52 @@ public class Sale extends DbObj {
         this.person = person;
     }
 
-    public List<DocumentReference> getArticles() {
+    public List<SaleArticle> getArticles() {
         return articles;
     }
 
-    public void setArticles(List<DocumentReference> articles) {
+    public void setArticles(List<SaleArticle> articles) {
         this.articles = articles;
+    }
+
+    public Date getPayedDate() {
+        return payedDate;
+    }
+
+    public void setPayedDate(Date payedDate) {
+        this.payedDate = payedDate;
+    }
+
+    public boolean isPayed() {
+        return payed;
+    }
+
+    public void setPayed(boolean payed) {
+        this.payed = payed;
+    }
+
+    public String getArticlesText() {
+        return articlesText;
+    }
+
+    public void setArticlesText(String articlesText) {
+        this.articlesText = articlesText;
+    }
+
+    public Double getGiven() {
+        return given;
+    }
+
+    public void setGiven(Double given) {
+        this.given = given;
+    }
+
+    public Double getTip() {
+        return tip;
+    }
+
+    public void setTip(Double tip) {
+        this.tip = tip;
     }
 
     public void save() {
@@ -93,5 +138,52 @@ public class Sale extends DbObj {
                         String s = e.getMessage();
                     }
                 });
+    }
+
+    public static Sale newSale(Person person) {
+        Sale sale = new Sale();
+        sale.setPerson(person.getReference());
+        sale.setDay(new Date());
+        return sale;
+    }
+
+    public void addArticle(Article article) {
+        boolean found = false;
+        for(SaleArticle saleArticle : articles) {
+            if(saleArticle.getArticle().getId().equals(article.getReference().getId())) {
+                found=true;
+                saleArticle.addOne();
+            }
+        }
+
+        if(!found) {
+            SaleArticle saleArticle = SaleArticle.newSaleArticle(article);
+            articles.add(saleArticle);
+        }
+
+        calc();
+    }
+
+    private void calc() {
+        double sum = 0.0;
+        String articlesText = "";
+        for(SaleArticle saleArticle : articles) {
+            sum += saleArticle.getSumPrice();
+            if(saleArticle.getAmount() > 1)
+                articlesText += saleArticle.getAmount() + "x ";
+            articlesText += saleArticle.getArticleText()+", ";
+        }
+        if(articlesText.length() > 0)
+            articlesText = articlesText.substring(0, articlesText.length()-2);
+
+        setArticlesText(articlesText);
+        setSum(sum);
+    }
+
+    public void markAsPayed(Double given, Double tip) {
+        setPayed(true);
+        setPayedDate(new Date());
+        setGiven(given);
+        setTip(tip);
     }
 }
