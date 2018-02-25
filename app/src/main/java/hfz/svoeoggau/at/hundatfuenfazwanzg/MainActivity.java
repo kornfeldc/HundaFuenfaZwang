@@ -8,13 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.ArticlesFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.PersonsFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.SalesFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.SettingsFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.StatisticsFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private TextView mTextMessage;
 
