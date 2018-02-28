@@ -28,6 +28,7 @@ public class MainActivity extends BaseActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_sale:
                     changeFragment(new SalesFragment());
+                    //changeFragment(new PersonsFragment());
                     return true;
                 case R.id.navigation_persons:
                     changeFragment(new PersonsFragment());
@@ -60,6 +61,7 @@ public class MainActivity extends BaseActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         changeFragment(new SalesFragment());
+        //changeFragment(new PersonsFragment());
     }
 
 }

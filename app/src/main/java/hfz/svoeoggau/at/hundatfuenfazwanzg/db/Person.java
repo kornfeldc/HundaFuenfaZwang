@@ -1,12 +1,16 @@
 package hfz.svoeoggau.at.hundatfuenfazwanzg.db;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Document;
@@ -29,6 +33,9 @@ public class Person extends DbObj {
     private String firstName="";
     private String lastName = "";
     private Boolean isMember = false;
+    private String memberNr = "";
+    private String phoneNr  ="";
+    private Double credit = 0.0;
 
     public String getFirstName() {
         return firstName;
@@ -61,6 +68,30 @@ public class Person extends DbObj {
 
     public void setMember(Boolean member) {
         isMember = member;
+    }
+
+    public String getMemberNr() {
+        return memberNr;
+    }
+
+    public void setMemberNr(String memberNr) {
+        this.memberNr = memberNr;
+    }
+
+    public String getPhoneNr() {
+        return phoneNr;
+    }
+
+    public void setPhoneNr(String phoneNr) {
+        this.phoneNr = phoneNr;
+    }
+
+    public Double getCredit() {
+        return credit;
+    }
+
+    public void setCredit(Double credit) {
+        this.credit = credit;
     }
 
     public void save() {
@@ -102,12 +133,12 @@ public class Person extends DbObj {
                 });
     }
 
-    public static void search(String lastName, String firstName, final OnLoadList oll) {
+    public static void load(String search, final OnLoadList oll) {
         //todo like name
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION)
-                .whereEqualTo("lastName", lastName)
-                .whereEqualTo("firstName", firstName)
+                .orderBy("lastName")
+                .orderBy("firstName")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -127,6 +158,68 @@ public class Person extends DbObj {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         oll.callback(null);
+                    }
+                });
+    }
+
+    public boolean matchSearch(String search) {
+        search = search.toLowerCase();
+        return search.equals("") || getLastName().toLowerCase().indexOf(search) >= 0 || getFirstName().toLowerCase().indexOf(search) >= 0;
+    }
+
+
+    public interface OnListChanged {
+        void callback();
+    }
+    public static void listen(final Vector<Person> actList, final OnListChanged listChanged) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(COLLECTION)
+                .orderBy("lastName")
+                .orderBy("firstName")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                        for(DocumentChange dc : documentSnapshots.getDocumentChanges() ) {
+                            Person person = dc.getDocument().toObject(Person.class);
+                            person.setReference(dc.getDocument().getReference());
+
+                            int newIndex = dc.getNewIndex();
+                            int oldIndex = dc.getOldIndex();
+
+                            int idx = -1;
+                            int i = 0;
+
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    actList.insertElementAt(person, newIndex);
+                                    //Log.d(TAG, "New city: " + dc.getDocument().getData());
+                                    break;
+                                case MODIFIED:
+                                    //index changes are not handled yet (e.g.: when the name of a person changes, it does not get reordered)
+                                    for(Person p : actList) {
+                                        if(p.getReference().getId().equals(person.getReference().getId()))
+                                            idx = i;
+                                        i++;
+                                    }
+
+                                    if(idx >= 0)
+                                        actList.set(idx, person);
+                                    //Log.d(TAG, "Modified city: " + dc.getDocument().getData());
+                                    break;
+                                case REMOVED:
+                                    for(Person p : actList) {
+                                        if(p.getReference().getId().equals(person.getReference().getId()))
+                                            idx = i;
+                                        i++;
+                                    }
+
+                                    if(idx >= 0)
+                                        actList.remove(idx);
+                                    //Log.d(TAG, "Removed city: " + dc.getDocument().getData());
+                                    break;
+                            }
+                        }
+                        listChanged.callback();
                     }
                 });
     }
