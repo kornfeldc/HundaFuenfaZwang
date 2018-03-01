@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import java.util.Vector;
 
+import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
+
 
 /**
  * Created by Christian on 30.10.2014.

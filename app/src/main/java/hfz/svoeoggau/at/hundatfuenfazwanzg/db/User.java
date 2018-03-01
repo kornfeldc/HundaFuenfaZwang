@@ -24,11 +24,11 @@ public class User extends DbObj {
     public static final String COLLECTION = "users";
     public static final String FIELD_USERNAME = "userName";
     public static final String FIELD_LOGIN = "login";
-    public static final String FIELD_ISADMIN = "isAdmin";
+    public static final String FIELD_ISADMIN = "admin";
 
     private String userName="";
     private String login="";
-    private boolean isAdmin = false;
+    private Integer admin = 0;
 
 
     public String getLogin() {
@@ -47,25 +47,25 @@ public class User extends DbObj {
         this.userName = userName;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public Integer getAdmin() {
+        return admin;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setAdmin(Integer admin) {
+        this.admin = admin;
     }
 
     public void parseMap(Map<String,Object> map) {
         setLogin(map.get(FIELD_LOGIN).toString());
         setUserName(map.get(FIELD_USERNAME).toString());
-        setAdmin((boolean)map.get(FIELD_ISADMIN));
+        setAdmin(Integer.valueOf(map.get(FIELD_ISADMIN).toString()));
     }
 
     private Map<String, Object> getMap() {
         Map<String, Object> map = new HashMap<>();
         map.put(FIELD_LOGIN, getLogin());
         map.put(FIELD_USERNAME, getUserName());
-        map.put(FIELD_ISADMIN, isAdmin());
+        map.put(FIELD_ISADMIN, getAdmin());
         return map;
     }
 

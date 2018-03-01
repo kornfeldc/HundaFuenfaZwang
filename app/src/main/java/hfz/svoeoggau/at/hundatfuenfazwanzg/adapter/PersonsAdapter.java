@@ -2,6 +2,7 @@ package hfz.svoeoggau.at.hundatfuenfazwanzg.adapter;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,8 +18,6 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
 
 public class PersonsAdapter extends BaseAdapter {
 
-    private String search = "";
-
     public PersonsAdapter(Context context, int layoutResource, Vector<?> items) {
         super(context, layoutResource, items);
     }
@@ -27,20 +26,18 @@ public class PersonsAdapter extends BaseAdapter {
         super(context, layoutResource, items, onItemClickListener);
     }
 
-    public void setSearch(String search) {
-        this.search = search;
-    }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Person person = (Person)getItem(position);
-        LinearLayout layout = (LinearLayout)holder.layout.findViewById(R.id.listLayout);
-        if(person.matchSearch(search)) {
-            layout.setVisibility(View.VISIBLE);
-            TextView textLastName = (TextView) holder.layout.findViewById(R.id.textLastName);
-            textLastName.setText(person.getLastName());
-        }
-        else
-            layout.setVisibility(View.GONE);
+
+        TextView textName = (TextView) holder.layout.findViewById(R.id.textName);
+        textName.setText(person.getName());
+
+        TextView textAvatar = (TextView)holder.layout.findViewById(R.id.avatar);
+        textAvatar.setText(person.getShortName());
+
+        ImageView imageMember = (ImageView)holder.layout.findViewById(R.id.imageMember);
+        imageMember.setVisibility(person.getMember() != 0 ? View.VISIBLE: View.GONE);
     }
 }

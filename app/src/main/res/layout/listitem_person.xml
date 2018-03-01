@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/listLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_horizontal_margin">
 
     <TextView
-        android:id="@+id/textLastName"
-        android:layout_width="wrap_content"
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:background="@drawable/circlebg"
+        android:textColor="@color/colorPrimaryInverse"
+        android:text="XX"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="@dimen/avatar_font"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+    </TextView>
+
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
         android:text="TextView"
+        android:textSize="@dimen/fontsize_h2"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
+
+    <ImageView
+        android:id="@+id/imageMember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_star"
+        android:tint="@color/colorAccent"/>
+
+
 </LinearLayout>

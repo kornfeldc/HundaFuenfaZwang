@@ -1,14 +1,19 @@
 package hfz.svoeoggau.at.hundatfuenfazwanzg;
 
 import android.app.Fragment;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.ArticlesFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.PersonsFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.SalesFragment;
@@ -18,7 +23,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.StatisticsFragment;
 public class MainActivity extends BaseActivity {
 
     private TextView mTextMessage;
-
+    private BaseFragment fragment;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -27,20 +32,24 @@ public class MainActivity extends BaseActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_sale:
-                    changeFragment(new SalesFragment());
-                    //changeFragment(new PersonsFragment());
+                    fragment = new SalesFragment();
+                    changeFragment(fragment);
                     return true;
                 case R.id.navigation_persons:
-                    changeFragment(new PersonsFragment());
+                    fragment = new PersonsFragment();
+                    changeFragment(fragment);
                     return true;
                 case R.id.navigation_articles:
-                    changeFragment(new ArticlesFragment());
+                    fragment = new ArticlesFragment();
+                    changeFragment(fragment);
                     return true;
                 case R.id.navigation_statistics:
-                    changeFragment(new StatisticsFragment());
+                    fragment = new StatisticsFragment();
+                    changeFragment(fragment);
                     return true;
                 case R.id.navigation_settings:
-                    changeFragment(new SettingsFragment());
+                    fragment = new SettingsFragment();
+                    changeFragment(fragment);
                     return true;
             }
             return false;
@@ -60,8 +69,36 @@ public class MainActivity extends BaseActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        changeFragment(new SalesFragment());
-        //changeFragment(new PersonsFragment());
+        fragment = new SalesFragment();
+        changeFragment(fragment);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.toolbar_search, menu);
+        SearchManager searchManager =(SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =(SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(fragment != null) fragment.executeSearch(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(fragment != null) fragment.executeSearch(newText);
+                return false;
+            }
+        });
+        return true;
+
+    }
+
+    private void sendSearchToFragment(String search) {
+
     }
 
 }

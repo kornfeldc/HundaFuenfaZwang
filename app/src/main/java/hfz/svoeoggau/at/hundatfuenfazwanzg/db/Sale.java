@@ -34,7 +34,7 @@ public class Sale extends DbObj {
     private Double given = 0.0;
     private Double tip = 0.0;
     private Date payedDate;
-    private boolean isPayed = false;
+    private Integer payed = 0;
     private String articlesText = "";
     private String personName = "";
 
@@ -81,12 +81,12 @@ public class Sale extends DbObj {
         this.payedDate = payedDate;
     }
 
-    public boolean isPayed() {
-        return isPayed;
+    public Integer getPayed() {
+        return payed;
     }
 
-    public void setPayed(boolean payed) {
-        this.isPayed = payed;
+    public void setPayed(Integer payed) {
+        this.payed = payed;
     }
 
     public String getPersonName() {
@@ -194,7 +194,7 @@ public class Sale extends DbObj {
     }
 
     public void markAsPayed(Double given, Double tip) {
-        setPayed(true);
+        setPayed(1);
         setPayedDate(new Date());
         setGiven(given);
         setTip(tip);

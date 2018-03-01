@@ -32,7 +32,7 @@ public class Person extends DbObj {
 
     private String firstName="";
     private String lastName = "";
-    private Boolean isMember = false;
+    private Integer member = 0;
     private String memberNr = "";
     private String phoneNr  ="";
     private Double credit = 0.0;
@@ -62,12 +62,21 @@ public class Person extends DbObj {
         return lastName;
     }
 
-    public Boolean getMember() {
-        return isMember;
+    public String getShortName() {
+        String ret = "";
+        if(!lastName.isEmpty())
+            ret+=lastName.substring(0,1);
+        if(!firstName.isEmpty())
+            ret += firstName.substring(0,1);
+        return ret.toUpperCase();
     }
 
-    public void setMember(Boolean member) {
-        isMember = member;
+    public Integer getMember() {
+        return member;
+    }
+
+    public void setMember(Integer member) {
+        this.member = member;
     }
 
     public String getMemberNr() {

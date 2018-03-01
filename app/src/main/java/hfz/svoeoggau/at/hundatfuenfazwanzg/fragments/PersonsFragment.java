@@ -2,10 +2,12 @@ package hfz.svoeoggau.at.hundatfuenfazwanzg.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Vector;
@@ -27,6 +29,9 @@ public class PersonsFragment extends BaseFragment {
     private PersonsAdapter mAdapter;
     private BaseList mList;
     private Vector<Person> persons = new Vector<>();
+    private Vector<Person> personsFiltered = new Vector<>();
+    private FloatingActionButton fab;
+    private String search = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,20 +44,55 @@ public class PersonsFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
 
-        mAdapter = new PersonsAdapter(getActivity(), R.layout.listitem_person, persons, new BaseAdapter.IOnItemClickListener() {
+        mAdapter = new PersonsAdapter(getActivity(), R.layout.listitem_person, personsFiltered, new BaseAdapter.IOnItemClickListener() {
             @Override
             public <T> void onItemClick(ViewGroup viewGroup, View view, int position, T item) {
+                openPerson(personsFiltered.get(position));
             }
         });
 
         mList = new BaseList(getActivity(), R.id.swipeRefreshLayout, mAdapter);
+        fab = getView().findViewById(R.id.button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openPerson(null);
+            }
+        });
+
+        setOnSearchListener(new OnSearch() {
+            @Override
+            public void search(String searchStr) {
+                search = searchStr;
+                createFiltered();
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
         Person.listen(persons, new Person.OnListChanged() {
             @Override
             public void callback() {
+                createFiltered();
                 mAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void createFiltered() {
+        personsFiltered.clear();
+        for(Person p : persons) {
+            if(p.matchSearch(search))
+                personsFiltered.add(p);
+        }
+    }
+
+    private void openPerson(Person person) {
+        if(person == null) {
+
+        }
+        else {
+
+        }
     }
 
 }
