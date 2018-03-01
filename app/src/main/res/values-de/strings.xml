@@ -7,4 +7,17 @@
     <string name="title_statistics">Statistiken</string>
     <string name="title_settings">Einstellungen</string>
     <string name="person_direct">Direktverkauf</string>
+
+    <string name="delete">Löschen</string>#
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+
+    <string name="new_person">Neue Person</string>
+    <string name="person">Person</string>
+    <string name="delete_person">Wollen Sie diese Person wirklich löschen?</string>
+    <string name="lastname">Nachname</string>
+    <string name="firstname">Vorname</string>
+    <string name="phoneNr">Telefon-Nr</string>
+    <string name="isMember">Ist Mitglied</string>
+    <string name="enter_name">Bitte geben Sie einen Namen ein</string>
 </resources>

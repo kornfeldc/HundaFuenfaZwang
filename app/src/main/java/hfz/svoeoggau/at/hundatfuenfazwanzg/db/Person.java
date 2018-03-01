@@ -105,7 +105,6 @@ public class Person extends DbObj {
 
     public void save() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         if(isIdSet())
             db.collection(COLLECTION).document(getId()).set(this);
         else
@@ -115,6 +114,13 @@ public class Person extends DbObj {
                     setReference(documentReference);
                 }
             });
+    }
+
+    public void delete() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        if(isIdSet()) {
+            db.collection(COLLECTION).document(getId()).delete();
+        }
     }
 
     public static void getById(String id, final OnLoadSingle ols) {
@@ -200,8 +206,14 @@ public class Person extends DbObj {
 
                             switch (dc.getType()) {
                                 case ADDED:
-                                    actList.insertElementAt(person, newIndex);
-                                    //Log.d(TAG, "New city: " + dc.getDocument().getData());
+                                    //this can be called even if entry is already in list, so check if its not before adding
+                                    boolean alreadyAdded = false;
+                                    for(Person p : actList) {
+                                        if(p.getReference().getId().equals(person.getReference().getId()))
+                                            alreadyAdded=true;
+                                    }
+                                    if(!alreadyAdded)
+                                        actList.insertElementAt(person, newIndex);
                                     break;
                                 case MODIFIED:
                                     //index changes are not handled yet (e.g.: when the name of a person changes, it does not get reordered)

@@ -6,4 +6,17 @@
     <string name="title_statistics">Statistics</string>
     <string name="title_settings">Settings</string>
     <string name="person_direct">Directsale</string>
+
+    <string name="delete">Delete</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="new_person">New Person</string>
+    <string name="person">Person</string>
+    <string name="delete_person">Do you really want to delete this person?</string>
+    <string name="lastname">Lastname</string>
+    <string name="firstname">Firstname</string>
+    <string name="phoneNr">Phone-Nr</string>
+    <string name="isMember">Is Member</string>
+    <string name="enter_name">Please enter a name</string>
 </resources>

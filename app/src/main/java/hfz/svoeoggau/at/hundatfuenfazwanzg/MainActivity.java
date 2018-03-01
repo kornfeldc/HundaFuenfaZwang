@@ -96,9 +96,4 @@ public class MainActivity extends BaseActivity {
         return true;
 
     }
-
-    private void sendSearchToFragment(String search) {
-
-    }
-
 }

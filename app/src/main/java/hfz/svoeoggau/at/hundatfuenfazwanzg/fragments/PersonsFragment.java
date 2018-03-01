@@ -1,5 +1,6 @@
 package hfz.svoeoggau.at.hundatfuenfazwanzg.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Vector;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.activities.PersonActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.adapter.PersonsAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseFragment;
@@ -87,12 +89,10 @@ public class PersonsFragment extends BaseFragment {
     }
 
     private void openPerson(Person person) {
-        if(person == null) {
-
-        }
-        else {
-
-        }
+        Intent intent = new Intent(getActivity(), PersonActivity.class);
+        if(person != null)
+            intent.putExtra("personId", person.getReference().getId());
+        startActivity(intent);
     }
 
 }
