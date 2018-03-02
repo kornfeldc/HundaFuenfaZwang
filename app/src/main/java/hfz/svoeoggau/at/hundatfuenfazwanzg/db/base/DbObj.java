@@ -11,12 +11,15 @@ import java.util.List;
 
 public class DbObj {
 
+    @Exclude
     private DocumentReference reference;
 
+    @Exclude
     public DocumentReference getReference() {
         return reference;
     }
 
+    @Exclude
     public void setReference(DocumentReference reference) {
         this.reference = reference;
     }
@@ -29,10 +32,16 @@ public class DbObj {
         void callback(List<Object> obj);
     }
 
+    public interface OnListChanged {
+        void callback();
+    }
+
+    @Exclude
     public boolean isIdSet() {
         return (reference != null && reference.getId() != null);
     }
 
+    @Exclude
     public String getId() {
         if(isIdSet())
             return reference.getId();

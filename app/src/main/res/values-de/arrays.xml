@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="article_category">
+        <item>Alcoholic</item>
+        <item>Nonalcoholic</item>
+        <item>Meals</item>
+        <item>Snacks</item>
+        <item>Sweets</item>
+    </string-array>
+</resources>

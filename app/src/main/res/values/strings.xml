@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HundatFuenfaZwanzg</string>
+    <string name="app_name">HUNDatfuenfazwanzg</string>
     <string name="title_sale">Sale</string>
     <string name="title_persons">Persons</string>
     <string name="title_articles">Articles</string>
@@ -7,6 +7,7 @@
     <string name="title_settings">Settings</string>
     <string name="person_direct">Directsale</string>
 
+    <string name="enter_fields">Please enter values in all fields</string>
     <string name="delete">Delete</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -19,4 +20,12 @@
     <string name="phoneNr">Phone-Nr</string>
     <string name="isMember">Is Member</string>
     <string name="enter_name">Please enter a name</string>
+
+    <string name="article_name">Article-Name</string>
+    <string name="article">Article</string>
+    <string name="new_article">New Article</string>
+    <string name="delete_article">Do you really want to delete this article?</string>
+    <string name="price">Price</string>
+    <string name="category">Category</string>
+    <string name="isFavorite">Favorite</string>
 </resources>

@@ -3,6 +3,7 @@ package hfz.svoeoggau.at.hundatfuenfazwanzg.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -39,26 +40,25 @@ public class PersonsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_persons, container, false);
+        View view =inflater.inflate(R.layout.fragment_persons, container, false);
+        return view;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        mAdapter = new PersonsAdapter(getActivity(), R.layout.listitem_person, personsFiltered, new BaseAdapter.IOnItemClickListener() {
-            @Override
-            public <T> void onItemClick(ViewGroup viewGroup, View view, int position, T item) {
-                openPerson(personsFiltered.get(position));
-            }
-        });
-
-        mList = new BaseList(getActivity(), R.id.swipeRefreshLayout, mAdapter);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         fab = getView().findViewById(R.id.button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openPerson(null);
+            }
+        });
+
+        mAdapter = new PersonsAdapter(getActivity(), R.layout.listitem_person, personsFiltered, new BaseAdapter.IOnItemClickListener() {
+            @Override
+            public <T> void onItemClick(ViewGroup viewGroup, View view, int position, T item) {
+                openPerson(personsFiltered.get(position));
             }
         });
 
@@ -75,6 +75,9 @@ public class PersonsFragment extends BaseFragment {
             @Override
             public void callback() {
                 createFiltered();
+                if(mList == null)
+                    mList = new BaseList(getActivity(), R.id.swipeRefreshLayout, mAdapter);
+
                 mAdapter.notifyDataSetChanged();
             }
         });

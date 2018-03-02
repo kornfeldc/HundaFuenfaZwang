@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fontsize_h2">20dp</dimen>
+    <dimen name="fontsize_h3">18dp</dimen>
 
     <dimen name="avatar_font">18dp</dimen>
     <dimen name="avatar_size">40dp</dimen>

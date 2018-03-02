@@ -16,6 +16,8 @@
             android:id="@+id/textLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="text"
             android:hint="@string/lastname"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 
@@ -23,6 +25,8 @@
             android:id="@+id/textFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="text"
             android:hint="@string/firstname"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 
@@ -30,6 +34,8 @@
             android:id="@+id/textPhoneNr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="text"
             android:hint="@string/phoneNr"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 

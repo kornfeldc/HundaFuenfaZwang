@@ -23,6 +23,10 @@
             android:name=".activities.PersonActivity"
             android:label="@string/person">
         </activity>
+        <activity
+            android:name=".activities.ArticleActivity"
+            android:label="@string/article">
+        </activity>
     </application>
 
 </manifest>

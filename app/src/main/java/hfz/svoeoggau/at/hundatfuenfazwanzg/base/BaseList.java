@@ -44,6 +44,10 @@ public class BaseList {
         initSwipeRefresh();
     }
 
+    public void destroy(){
+        mRecyclerView.setAdapter(null);
+    }
+
     private void initSwipeRefresh() {
         if(mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setColorScheme(R.color.colorPrimaryDark, R.color.colorPrimary, R.color.colorAccent, R.color.colorAccentDark);

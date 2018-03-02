@@ -9,8 +9,10 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Document;
@@ -53,6 +55,7 @@ public class Person extends DbObj {
         this.lastName = lastName;
     }
 
+    @Exclude
     public String getName() {
         if(!firstName.isEmpty() && !lastName.isEmpty()) {
             return firstName + " " + lastName;
@@ -62,6 +65,7 @@ public class Person extends DbObj {
         return lastName;
     }
 
+    @Exclude
     public String getShortName() {
         String ret = "";
         if(!lastName.isEmpty())
@@ -182,65 +186,64 @@ public class Person extends DbObj {
         return search.equals("") || getLastName().toLowerCase().indexOf(search) >= 0 || getFirstName().toLowerCase().indexOf(search) >= 0;
     }
 
-
-    public interface OnListChanged {
-        void callback();
-    }
     public static void listen(final Vector<Person> actList, final OnListChanged listChanged) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION)
-                .orderBy("lastName")
+                .orderBy("member", Query.Direction.DESCENDING)
                 .orderBy("firstName")
+                .orderBy("lastName")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                        for(DocumentChange dc : documentSnapshots.getDocumentChanges() ) {
-                            Person person = dc.getDocument().toObject(Person.class);
-                            person.setReference(dc.getDocument().getReference());
+                        if(documentSnapshots != null && documentSnapshots.getDocumentChanges() != null) {
+                            for (DocumentChange dc : documentSnapshots.getDocumentChanges()) {
+                                Person person = dc.getDocument().toObject(Person.class);
+                                person.setReference(dc.getDocument().getReference());
 
-                            int newIndex = dc.getNewIndex();
-                            int oldIndex = dc.getOldIndex();
+                                int newIndex = dc.getNewIndex();
+                                int oldIndex = dc.getOldIndex();
 
-                            int idx = -1;
-                            int i = 0;
+                                int idx = -1;
+                                int i = 0;
 
-                            switch (dc.getType()) {
-                                case ADDED:
-                                    //this can be called even if entry is already in list, so check if its not before adding
-                                    boolean alreadyAdded = false;
-                                    for(Person p : actList) {
-                                        if(p.getReference().getId().equals(person.getReference().getId()))
-                                            alreadyAdded=true;
-                                    }
-                                    if(!alreadyAdded)
-                                        actList.insertElementAt(person, newIndex);
-                                    break;
-                                case MODIFIED:
-                                    //index changes are not handled yet (e.g.: when the name of a person changes, it does not get reordered)
-                                    for(Person p : actList) {
-                                        if(p.getReference().getId().equals(person.getReference().getId()))
-                                            idx = i;
-                                        i++;
-                                    }
+                                switch (dc.getType()) {
+                                    case ADDED:
+                                        //this can be called even if entry is already in list, so check if its not before adding
+                                        boolean alreadyAdded = false;
+                                        for (Person p : actList) {
+                                            if (p.getReference().getId().equals(person.getReference().getId()))
+                                                alreadyAdded = true;
+                                        }
+                                        if (!alreadyAdded)
+                                            actList.insertElementAt(person, newIndex);
+                                        break;
+                                    case MODIFIED:
+                                        //index changes are not handled yet (e.g.: when the name of a person changes, it does not get reordered)
+                                        for (Person p : actList) {
+                                            if (p.getReference().getId().equals(person.getReference().getId()))
+                                                idx = i;
+                                            i++;
+                                        }
 
-                                    if(idx >= 0)
-                                        actList.set(idx, person);
-                                    //Log.d(TAG, "Modified city: " + dc.getDocument().getData());
-                                    break;
-                                case REMOVED:
-                                    for(Person p : actList) {
-                                        if(p.getReference().getId().equals(person.getReference().getId()))
-                                            idx = i;
-                                        i++;
-                                    }
+                                        if (idx >= 0)
+                                            actList.set(idx, person);
+                                        //Log.d(TAG, "Modified city: " + dc.getDocument().getData());
+                                        break;
+                                    case REMOVED:
+                                        for (Person p : actList) {
+                                            if (p.getReference().getId().equals(person.getReference().getId()))
+                                                idx = i;
+                                            i++;
+                                        }
 
-                                    if(idx >= 0)
-                                        actList.remove(idx);
-                                    //Log.d(TAG, "Removed city: " + dc.getDocument().getData());
-                                    break;
+                                        if (idx >= 0)
+                                            actList.remove(idx);
+                                        //Log.d(TAG, "Removed city: " + dc.getDocument().getData());
+                                        break;
+                                }
                             }
+                            listChanged.callback();
                         }
-                        listChanged.callback();
                     }
                 });
     }
