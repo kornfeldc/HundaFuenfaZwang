@@ -11,6 +11,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Article;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Format;
 
 /**
  * Created by Christian on 25.02.2018.
@@ -35,9 +36,11 @@ public class ArticlesAdapter extends BaseAdapter {
         textTitle.setText(article.getTitle());
 
         TextView textPrice = (TextView)holder.layout.findViewById(R.id.textPrice);
-        textPrice.setText(article.getPriceStr());
+        textPrice.setText(Format.doubleToCurrency(article.getPrice()));
 
         ImageView imageFavorite = (ImageView)holder.layout.findViewById(R.id.imageFavorite);
         imageFavorite.setVisibility(article.getFavorite() != 0 ? View.VISIBLE: View.GONE);
+
+        showLastItemSpacer(holder,position);
     }
 }

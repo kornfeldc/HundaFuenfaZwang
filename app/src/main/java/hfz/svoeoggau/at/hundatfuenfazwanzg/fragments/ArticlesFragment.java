@@ -52,7 +52,7 @@ public class ArticlesFragment extends BaseFragment {
 
         mAdapter = new ArticlesAdapter(getActivity(), R.layout.listitem_article, articlesFiltered, new BaseAdapter.IOnItemClickListener() {
             @Override
-            public <T> void onItemClick(ViewGroup viewGroup, View view, int position, T item) {
+            public <T> void onItemClick(View view, int position, T item) {
                 openArticle(articlesFiltered.get(position));
             }
         });
@@ -66,11 +66,12 @@ public class ArticlesFragment extends BaseFragment {
             }
         });
 
+        showProgress();
         Article.listen(articles, new Article.OnListChanged() {
             @Override
             public void callback() {
                 createFiltered();
-
+                hideProgress();
                 if(mList == null)
                     mList = new BaseList(getActivity(), R.id.swipeRefreshLayout, mAdapter);
 

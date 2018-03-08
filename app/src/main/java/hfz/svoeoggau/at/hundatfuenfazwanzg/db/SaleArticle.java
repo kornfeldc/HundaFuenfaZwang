@@ -51,6 +51,11 @@ public class SaleArticle {
         sumPrice+=singlePrice;
     }
 
+    public void add(int pamount) {
+        this.amount+=pamount;
+        sumPrice+=(pamount*singlePrice);
+    }
+
     public String getArticleText() {
         return articleText;
     }

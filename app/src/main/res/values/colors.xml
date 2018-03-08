@@ -5,4 +5,8 @@
     <color name="colorAccent">#FFC800</color>
     <color name="colorAccentDark">#c7a014</color>
     <color name="colorPrimaryInverse">#FFFFFF</color>
+    <color name="colorHeader">#606060</color>
+    <color name="colorOpen">#EF6C00</color>
+    <color name="colorDone">#00C853</color>
+    <color name="colorRemove">#C62828</color>
 </resources>

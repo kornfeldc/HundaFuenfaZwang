@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:background="@drawable/circlebg"
+            android:textColor="@color/colorPrimaryInverse"
+            android:text="XX"
+            android:maxLines="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="@dimen/avatar_font"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/fontsize_h2"
+                android:maxLines="1" />
+            <TextView
+                android:id="@+id/textArticles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="abc"
+                android:textSize="@dimen/fontsize_subtext"
+                android:maxLines="1"/>
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/textPrice"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:maxLines="1"
+            android:text="TextView"
+            android:textSize="@dimen/fontsize_h3"
+            android:textColor="@color/colorOpen"/>
+
+    </LinearLayout>
+    <include layout="@layout/last_item_spacer"/>
+</LinearLayout>

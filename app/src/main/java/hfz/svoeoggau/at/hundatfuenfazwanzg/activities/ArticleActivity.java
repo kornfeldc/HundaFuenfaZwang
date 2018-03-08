@@ -21,6 +21,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Article;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.enums.Category;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Format;
 
 /**
  * Created by Christian on 25.02.2018.
@@ -72,9 +73,11 @@ public class ArticleActivity extends BaseActivity {
 
         if(!articleId.isEmpty()) {
             newArticle = false;
+            showProgress();
             Article.getById(articleId, new DbObj.OnLoadSingle() {
                 @Override
                 public void callback(Object obj) {
+                    hideProgress();
                     article = (Article)obj;
                     loadUI();
                 }
@@ -89,7 +92,7 @@ public class ArticleActivity extends BaseActivity {
         getSupportActionBar().setTitle(newArticle ? getResources().getString(R.string.new_article) : article.getTitle());
 
         textTitle.setText(article.getTitle());
-        textPrice.setText(String.valueOf(article.getPrice()));
+        textPrice.setText(Format.doubleToString(article.getPrice()));
         checkBoxFavorite.setChecked(article.getFavorite() != 0);
         spinnerCategory.setSelection(Category.getIndex(article.getCategory()), true);
     }
@@ -103,7 +106,7 @@ public class ArticleActivity extends BaseActivity {
         }
         else {
             article.setTitle(textTitle.getText().toString());
-            article.setPrice(Double.parseDouble(textPrice.getText().toString()));
+            article.setPrice(Format.stringToDouble(textPrice.getText().toString()));
             article.setFavorite(checkBoxFavorite.isChecked() ? 1 : 0);
             article.setCategory(Category.ARR[index]);
             article.save();

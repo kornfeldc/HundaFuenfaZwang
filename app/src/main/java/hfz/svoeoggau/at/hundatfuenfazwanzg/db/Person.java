@@ -22,7 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import hfz.svoeoggau.at.hundatfuenfazwanzg.classes.CreditHistory;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.DF;
 
 /**
  * Created by Christian on 23.02.2018.
@@ -31,6 +33,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 public class Person extends DbObj {
 
     public static final String COLLECTION = "persons";
+    public static final Boolean LAST_NAME_FIRST = false;
 
     private String firstName="";
     private String lastName = "";
@@ -38,6 +41,10 @@ public class Person extends DbObj {
     private String memberNr = "";
     private String phoneNr  ="";
     private Double credit = 0.0;
+    private List<CreditHistory> creditHistory = new Vector<CreditHistory>();
+
+    @Exclude
+    public boolean isDirect=false;
 
     public String getFirstName() {
         return firstName;
@@ -57,22 +64,38 @@ public class Person extends DbObj {
 
     @Exclude
     public String getName() {
-        if(!firstName.isEmpty() && !lastName.isEmpty()) {
-            return firstName + " " + lastName;
-        }
-        else if(!firstName.isEmpty())
-            return firstName;
-        return lastName;
+        return Person.getName(lastName, firstName);
     }
 
     @Exclude
     public String getShortName() {
+        return Person.getShortName(lastName, firstName);
+    }
+
+    @Exclude
+    public static String getShortName(String lastName, String firstName) {
         String ret = "";
-        if(!lastName.isEmpty())
+        if(LAST_NAME_FIRST && !lastName.isEmpty())
             ret+=lastName.substring(0,1);
         if(!firstName.isEmpty())
             ret += firstName.substring(0,1);
+        if(!LAST_NAME_FIRST && !lastName.isEmpty())
+            ret+=lastName.substring(0,1);
+
         return ret.toUpperCase();
+    }
+
+    @Exclude
+    public static String getName(String lastName, String firstName) {
+        if(!firstName.isEmpty() && !lastName.isEmpty()) {
+            if(LAST_NAME_FIRST)
+                return lastName + " " + firstName;
+            else
+                return firstName + " " + lastName;
+        }
+        else if(!firstName.isEmpty())
+            return firstName;
+        return lastName;
     }
 
     public Integer getMember() {
@@ -105,6 +128,19 @@ public class Person extends DbObj {
 
     public void setCredit(Double credit) {
         this.credit = credit;
+    }
+
+    public List<CreditHistory> getCreditHistory() {
+        return creditHistory;
+    }
+
+    public void setCreditHistory(List<CreditHistory> creditHistory) {
+        this.creditHistory = creditHistory;
+    }
+
+    public void addCredit(double credit) {
+        this.creditHistory.add(new CreditHistory(credit));
+        this.credit += credit;
     }
 
     public void save() {
@@ -190,8 +226,8 @@ public class Person extends DbObj {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION)
                 .orderBy("member", Query.Direction.DESCENDING)
-                .orderBy("firstName")
-                .orderBy("lastName")
+                .orderBy(LAST_NAME_FIRST ? "lastName" : "firstName")
+                .orderBy(LAST_NAME_FIRST ? "firstName" : "lastName")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
@@ -242,8 +278,8 @@ public class Person extends DbObj {
                                         break;
                                 }
                             }
-                            listChanged.callback();
                         }
+                        listChanged.callback();
                     }
                 });
     }

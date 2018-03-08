@@ -5,20 +5,27 @@ import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Format;
 
 /**
  * Created by Christian on 25.02.2018.
@@ -29,14 +36,18 @@ public class PersonActivity extends BaseActivity {
     Person person = new Person();
 
     EditText textLastName, textFirstName, textPhoneNr;
+    TextView textCredit;
     CheckBox checkBoxMember;
+    Button buttonAddCredit;
     FloatingActionButton fab;
 
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
+        context =  this;
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -45,12 +56,45 @@ public class PersonActivity extends BaseActivity {
         textFirstName = (EditText)findViewById(R.id.textFirstName);
         textPhoneNr = (EditText)findViewById(R.id.textPhoneNr);
         checkBoxMember = (CheckBox)findViewById(R.id.checkBoxMember);
+        textCredit = (TextView)findViewById(R.id.textCredit);
+        buttonAddCredit = (Button)findViewById(R.id.buttonAddCredit);
+
         fab = (FloatingActionButton)findViewById(R.id.button);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 save();
+            }
+        });
+        buttonAddCredit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //open input dialog with single number
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle(R.string.add_credit);
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                input.setText("20");
+                input.setRawInputType(Configuration.KEYBOARD_12KEY);
+                alert.setView(input);
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //Put actions for OK button here
+                        String creditStr = input.getText().toString();
+                        if(creditStr != null && !creditStr.isEmpty()) {
+                            double addCredit = Double.valueOf(creditStr);
+                            person.addCredit(addCredit);
+                            loadCredit();
+                        }
+                    }
+                });
+                alert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //Put actions for CANCEL button here, or leave in blank
+                    }
+                });
+                alert.show();
             }
         });
 
@@ -60,9 +104,11 @@ public class PersonActivity extends BaseActivity {
 
         if(!personId.isEmpty()) {
             newPerson = false;
+            showProgress();
             Person.getById(personId, new DbObj.OnLoadSingle() {
                 @Override
                 public void callback(Object obj) {
+                    hideProgress();
                     person = (Person)obj;
                     loadUI();
                 }
@@ -80,6 +126,13 @@ public class PersonActivity extends BaseActivity {
         textFirstName.setText(person.getFirstName());
         textPhoneNr.setText(person.getPhoneNr());
         checkBoxMember.setChecked(person.getMember() != 0);
+        loadCredit();
+    }
+
+    private void loadCredit() {
+        String s = getResources().getString(R.string.credit);
+        s+=": "+ Format.doubleToCurrency(person.getCredit());
+        textCredit.setText(s);
     }
 
     private void save() {

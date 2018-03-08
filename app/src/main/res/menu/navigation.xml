@@ -15,7 +15,7 @@
         android:id="@+id/navigation_articles"
         android:icon="@drawable/ic_coffee_black"
         android:title="@string/title_articles" />
-
+    <!--
     <item
         android:id="@+id/navigation_statistics"
         android:icon="@drawable/ic_piechart_black"
@@ -25,5 +25,5 @@
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_settings_black"
         android:title="@string/title_settings" />
-
+    -->
 </menu>

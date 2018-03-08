@@ -1,5 +1,7 @@
 package hfz.svoeoggau.at.hundatfuenfazwanzg.db;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -195,54 +197,57 @@ public class Article extends DbObj {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                        for(DocumentChange dc : documentSnapshots.getDocumentChanges() ) {
-                            Article article = dc.getDocument().toObject(Article.class);
-                            article.setReference(dc.getDocument().getReference());
+                        if(documentSnapshots != null && documentSnapshots.getDocumentChanges() != null) {
+                            for (DocumentChange dc : documentSnapshots.getDocumentChanges()) {
+                                Article article = dc.getDocument().toObject(Article.class);
+                                article.setReference(dc.getDocument().getReference());
 
-                            int newIndex = dc.getNewIndex();
-                            int oldIndex = dc.getOldIndex();
+                                int newIndex = dc.getNewIndex();
+                                int oldIndex = dc.getOldIndex();
 
-                            int idx = -1;
-                            int i = 0;
+                                int idx = -1;
+                                int i = 0;
 
-                            switch (dc.getType()) {
-                                case ADDED:
-                                    //this can be called even if entry is already in list, so check if its not before adding
-                                    boolean alreadyAdded = false;
-                                    for(Article a : actList) {
-                                        if(a.getReference().getId().equals(article.getReference().getId()))
-                                            alreadyAdded=true;
-                                    }
-                                    if(!alreadyAdded)
-                                        actList.insertElementAt(article, newIndex);
-                                    break;
-                                case MODIFIED:
-                                    //index changes are not handled yet (e.g.: when the name of a article changes, it does not get reordered)
-                                    for(Article a : actList) {
-                                        if(a.getReference().getId().equals(article.getReference().getId()))
-                                            idx = i;
-                                        i++;
-                                    }
+                                switch (dc.getType()) {
+                                    case ADDED:
+                                        //this can be called even if entry is already in list, so check if its not before adding
+                                        boolean alreadyAdded = false;
+                                        for (Article a : actList) {
+                                            if (a.getReference().getId().equals(article.getReference().getId()))
+                                                alreadyAdded = true;
+                                        }
+                                        if (!alreadyAdded)
+                                            actList.insertElementAt(article, newIndex);
+                                        break;
+                                    case MODIFIED:
+                                        //index changes are not handled yet (e.g.: when the name of a article changes, it does not get reordered)
+                                        for (Article a : actList) {
+                                            if (a.getReference().getId().equals(article.getReference().getId()))
+                                                idx = i;
+                                            i++;
+                                        }
 
-                                    if(idx >= 0)
-                                        actList.set(idx, article);
-                                    //Log.d(TAG, "Modified city: " + dc.getDocument().getData());
-                                    break;
-                                case REMOVED:
-                                    for(Article a : actList) {
-                                        if(a.getReference().getId().equals(article.getReference().getId()))
-                                            idx = i;
-                                        i++;
-                                    }
+                                        if (idx >= 0)
+                                            actList.set(idx, article);
+                                        //Log.d(TAG, "Modified city: " + dc.getDocument().getData());
+                                        break;
+                                    case REMOVED:
+                                        for (Article a : actList) {
+                                            if (a.getReference().getId().equals(article.getReference().getId()))
+                                                idx = i;
+                                            i++;
+                                        }
 
-                                    if(idx >= 0)
-                                        actList.remove(idx);
-                                    //Log.d(TAG, "Removed city: " + dc.getDocument().getData());
-                                    break;
+                                        if (idx >= 0)
+                                            actList.remove(idx);
+                                        //Log.d(TAG, "Removed city: " + dc.getDocument().getData());
+                                        break;
+                                }
                             }
                         }
                         listChanged.callback();
                     }
                 });
     }
+
 }

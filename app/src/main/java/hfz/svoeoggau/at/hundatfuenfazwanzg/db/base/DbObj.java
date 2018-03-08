@@ -36,6 +36,10 @@ public class DbObj {
         void callback();
     }
 
+    public interface OnCallback {
+        void callback();
+    }
+
     @Exclude
     public boolean isIdSet() {
         return (reference != null && reference.getId() != null);

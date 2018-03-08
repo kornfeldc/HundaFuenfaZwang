@@ -57,7 +57,7 @@ public class PersonsFragment extends BaseFragment {
 
         mAdapter = new PersonsAdapter(getActivity(), R.layout.listitem_person, personsFiltered, new BaseAdapter.IOnItemClickListener() {
             @Override
-            public <T> void onItemClick(ViewGroup viewGroup, View view, int position, T item) {
+            public <T> void onItemClick(View view, int position, T item) {
                 openPerson(personsFiltered.get(position));
             }
         });
@@ -71,9 +71,11 @@ public class PersonsFragment extends BaseFragment {
             }
         });
 
+        showProgress();
         Person.listen(persons, new Person.OnListChanged() {
             @Override
             public void callback() {
+                hideProgress();
                 createFiltered();
                 if(mList == null)
                     mList = new BaseList(getActivity(), R.id.swipeRefreshLayout, mAdapter);

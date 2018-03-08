@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name_short">125</string>
     <string name="app_name">HUNDatfuenfazwanzg</string>
     <string name="title_sale">Verkauf</string>
     <string name="title_persons">Personen</string>
@@ -8,10 +9,18 @@
     <string name="title_settings">Einstellungen</string>
     <string name="person_direct">Direktverkauf</string>
 
+    <string name="category_favorite">Favoriten</string>
+    <string name="category_alcoholic">Alkoholisch</string>
+    <string name="category_nonalcoholic">Alkoholfrei</string>
+    <string name="category_meal">Essen</string>
+    <string name="category_sweets">Süßes</string>
+
     <string name="enter_fields">Bitte füllen Sie alle Felder aus</string>
     <string name="delete">Löschen</string>#
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="please_wait">Bissi Geduld bitte ...</string>
 
     <string name="new_person">Neue Person</string>
     <string name="person">Person</string>
@@ -21,6 +30,9 @@
     <string name="phoneNr">Telefon-Nr</string>
     <string name="isMember">Ist Mitglied</string>
     <string name="enter_name">Bitte geben Sie einen Namen ein</string>
+    <string name="actual_credit">Aktuelles Guthaben</string>
+    <string name="credit">Guthaben</string>
+    <string name="add_credit">Guthaben hinzufügen</string>
 
     <string name="article_name">Artikel-Name</string>
     <string name="article">Artikel</string>
@@ -29,4 +41,18 @@
     <string name="price">Preis</string>
     <string name="category">Kategorie</string>
     <string name="isFavorite">Favorit</string>
+
+    <string name="add_article">Artikel hinzufügen</string>
+    <string name="sum">Summe</string>
+    <string name="new_sale">Neuer Verkauf</string>
+    <string name="delete_sale">Wollen Sie diesn Verkauf wirklich löschen?</string>
+
+    <string name="choose_person">Person auswählen</string>
+    <string name="top10">Top 10</string>
+    <string name="more_persons">Weitere</string>
+
+    <string name="choose_article">Artikel auswählen</string>
+    <string name="actual_selection">Aktuelle Auswahl</string>
+
+    <string name="pay">Bezahlen</string>
 </resources>

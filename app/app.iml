@@ -111,6 +111,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 26 Platform" jdkType="Android SDK" />
@@ -158,6 +159,7 @@
     <orderEntry type="library" name="com.android.support:transition-26.1.0" level="project" />
     <orderEntry type="library" name="com.squareup.okhttp:okhttp:2.7.2@jar" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-analytics-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:cardview-v7-26.1.0" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-analytics-impl-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-analytics-impl-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-tasks-license-11.8.0" level="project" />

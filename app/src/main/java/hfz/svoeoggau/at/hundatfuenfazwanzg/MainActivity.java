@@ -36,23 +36,28 @@ public class MainActivity extends BaseActivity {
                 case R.id.navigation_sale:
                     fragment = new SalesFragment();
                     changeFragment(fragment);
+                    getSupportActionBar().setTitle(R.string.title_sale);
                     return true;
                 case R.id.navigation_persons:
                     fragment = new PersonsFragment();
                     changeFragment(fragment);
+                    getSupportActionBar().setTitle(R.string.title_persons);
                     return true;
                 case R.id.navigation_articles:
                     fragment = new ArticlesFragment();
                     changeFragment(fragment);
+                    getSupportActionBar().setTitle(R.string.title_articles);
                     return true;
-                case R.id.navigation_statistics:
+                /*case R.id.navigation_statistics:
                     fragment = new StatisticsFragment();
                     changeFragment(fragment);
+                    getSupportActionBar().setTitle(R.string.title_statistics);
                     return true;
                 case R.id.navigation_settings:
                     fragment = new SettingsFragment();
                     changeFragment(fragment);
-                    return true;
+                    getSupportActionBar().setTitle(R.string.title_settings);
+                    return true;*/
             }
             return false;
         }
@@ -73,6 +78,7 @@ public class MainActivity extends BaseActivity {
 
         fragment = new SalesFragment();
         changeFragment(fragment);
+        getSupportActionBar().setTitle(R.string.title_sale);
     }
 
     @Override

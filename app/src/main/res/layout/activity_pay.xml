@@ -1,10 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinator"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="hfz.svoeoggau.at.hundatfuenfazwanzg.MainActivity">
+    android:layout_height="match_parent">
+    <include layout="@layout/progressbar"></include>
+    <include layout="@layout/pleasewait"></include>
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:padding="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textDay"
+            android:text="01.01.2018"
+            android:textSize="@dimen/fontsize_listheader"
+            android:textColor="@color/colorHeader"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin">
+        </TextView>
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardPerson"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/avatar"
+                    android:layout_width="@dimen/avatar_size"
+                    android:layout_height="@dimen/avatar_size"
+                    android:background="@drawable/circlebg"
+                    android:textColor="@color/colorPrimaryInverse"
+                    android:text="XX"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/avatar_font"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin">
+                </TextView>
+
+
+                <TextView
+                    android:id="@+id/textName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="TextView"
+                    android:textSize="@dimen/fontsize_h2"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="16dp" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <android:android.support.design.widget.FloatingActionButton
+        android:id="@+id/button"
+        layout_height="wrap_content"
+        layout_width="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        app:backgroundTint="@color/colorDone"
+        android:src="@drawable/ic_check_white"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp">
+    </android:android.support.design.widget.FloatingActionButton>
+</android.support.design.widget.CoordinatorLayout>

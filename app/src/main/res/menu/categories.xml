@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/favorite"
+        android:icon="@drawable/ic_heart_white"
+        android:title="@string/category_favorite" />
+
+    <item
+        android:id="@+id/alcoholic"
+        android:icon="@drawable/ic_alcohol_white"
+        android:title="@string/category_alcoholic" />
+
+    <item
+        android:id="@+id/nonalcoholic"
+        android:icon="@drawable/ic_coffee_white"
+        android:title="@string/category_nonalcoholic" />
+
+    <item
+        android:id="@+id/meal"
+        android:icon="@drawable/ic_meal_white"
+        android:title="@string/category_meal" />
+
+    <item
+        android:id="@+id/sweets"
+        android:icon="@drawable/ic_sweet_white"
+        android:title="@string/category_sweets" />
+
+</menu>

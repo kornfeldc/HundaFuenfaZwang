@@ -17,12 +17,12 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
 public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder> {
 
     int layoutResource = 0;
-    Vector<?> items;
+    protected Vector<?> items;
     IOnItemClickListener onItemClickListener;
-    Context context;
+    protected Context context;
 
     public interface IOnItemClickListener {
-        <T> void onItemClick(ViewGroup viewGroup, View view, int position, T item);
+        <T> void onItemClick(View view, int position, T item);
     }
 
     public BaseAdapter(Context context, int layoutResource, Vector<?> items) {
@@ -38,25 +38,46 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder> {
         this.context = context;
     }
 
+    public void showLastItemSpacer(ViewHolder holder, int position) {
+        View v = holder.layout.findViewById(R.id.lastitemspacer);
+        if(v != null && position == items.size()-1)
+            v.setVisibility(View.VISIBLE);
+        else if(v!=null)
+            v.setVisibility(View.GONE);
+    }
+
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(layoutResource, viewGroup, false);
+        final ViewHolder vh = new ViewHolder(v);
         if(onItemClickListener != null) {
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = viewGroup.indexOfChild(v);
+
+                    //int position = viewGroup.indexOfChild(v);
+
+                    int position = vh.getAdapterPosition();
                     if (onItemClickListener != null)
-                        onItemClickListener.onItemClick(viewGroup, v, position, items.get(position));
+                        onItemClickListener.onItemClick(v, position, items.get(position));
                 }
             });
         }
-        ViewHolder vh = new ViewHolder(v);
+        //ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
+
+        /*viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = viewHolder.getAdapterPosition();
+                if (onItemClickListener != null)
+                    onItemClickListener.onItemClick(view, position, items.get(position));
+            }
+        });*/
     }
 
     @Override

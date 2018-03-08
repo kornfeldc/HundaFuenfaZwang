@@ -39,5 +39,7 @@ public class PersonsAdapter extends BaseAdapter {
 
         ImageView imageMember = (ImageView)holder.layout.findViewById(R.id.imageMember);
         imageMember.setVisibility(person.getMember() != 0 ? View.VISIBLE: View.GONE);
+
+        showLastItemSpacer(holder,position);
     }
 }

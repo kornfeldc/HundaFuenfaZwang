@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="article_category">
-        <item>Alkoholisch</item>
-        <item>Alkoholfrei</item>
-        <item>Essen</item>
-        <item>Knabbern</item>
-        <item>Süßes</item>
+        <item>Alcoholic</item>
+        <item>Nonalcoholic</item>
+        <item>Meals</item>
+        <item>Sweets</item>
     </string-array>
 </resources>

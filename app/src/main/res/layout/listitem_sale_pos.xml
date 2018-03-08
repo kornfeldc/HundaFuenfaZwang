@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/margin_half"
+        android:paddingTop="@dimen/margin_half">
+
+        <TextView
+            android:id="@+id/textAmount"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="XX"
+            android:maxLines="1"
+            android:layout_gravity="center"
+            android:textSize="@dimen/fontsize_h2"
+            android:layout_marginRight="@dimen/margin_half">
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/textArticle"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_gravity="center"
+            android:text="TextView"
+            android:textSize="@dimen/fontsize_h3" />
+
+        <TextView
+            android:id="@+id/avatarAdd"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:background="@drawable/circlebg_add"
+            android:textColor="@color/colorPrimaryInverse"
+            android:text="+"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="@dimen/avatar_font"
+            android:layout_marginRight="@dimen/margin_half">
+        </TextView>
+
+        <TextView
+            android:id="@+id/avatarRemove"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:background="@drawable/circlebg_remove"
+            android:textColor="@color/colorPrimaryInverse"
+            android:text="-"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="@dimen/avatar_font"
+            android:layout_marginRight="@dimen/margin_half">
+        </TextView>
+
+        <TextView
+            android:id="@+id/textPrice"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:maxLines="1"
+            android:gravity="right"
+            android:text="TextView"
+            android:textSize="@dimen/fontsize_h3"
+            android:textColor="@color/colorHeader"/>
+    </LinearLayout>
+
+    <include layout="@layout/last_item_spacer"/>
+
+</LinearLayout>

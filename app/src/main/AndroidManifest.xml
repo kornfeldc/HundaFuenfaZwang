@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name_short">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,6 +26,22 @@
         <activity
             android:name=".activities.ArticleActivity"
             android:label="@string/article">
+        </activity>
+        <activity
+            android:name=".activities.PersonChooserActivity"
+            android:label="@string/choose_person">
+        </activity>
+        <activity
+            android:name=".activities.ArticleChooserActivity"
+            android:label="@string/choose_article">
+        </activity>
+        <activity
+            android:name=".activities.SaleActivity"
+            android:label="@string/title_sale">
+        </activity>
+        <activity
+            android:name=".activities.PayActivity"
+            android:label="@string/pay">
         </activity>
     </application>
 
