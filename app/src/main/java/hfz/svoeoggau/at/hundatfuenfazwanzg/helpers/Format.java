@@ -20,4 +20,10 @@ public class Format {
             return Double.valueOf(val.replace(",","."));
         return 0;
     }
+
+    public static String capitalize(final String line) {
+        if(line.length() > 0)
+            return Character.toUpperCase(line.charAt(0)) + line.substring(1);
+        return "";
+    }
 }

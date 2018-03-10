@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.ListenerRegistration;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import java.util.Vector;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.adapter.ArticlesAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.adapter.PersonsAdapter;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.base.AuthedActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseList;
@@ -37,7 +40,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
  * Created by Christian on 03.03.2018.
  */
 
-public class ArticleChooserActivity extends BaseActivity {
+public class ArticleChooserActivity extends AuthedActivity {
 
     private ArticlesAdapter mAdapter;
     private BaseList mList;
@@ -51,6 +54,7 @@ public class ArticleChooserActivity extends BaseActivity {
     private FloatingActionButton fab;
 
     private Vector<AbstractMap.SimpleEntry<Article, Integer>> addedArticles = new Vector<>();
+    private ListenerRegistration listenerRegistration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +125,7 @@ public class ArticleChooserActivity extends BaseActivity {
         });
 
         showProgress();
-        Article.listen(articles, new Person.OnListChanged() {
+        listenerRegistration = Article.listen(articles, context, new Person.OnListChanged() {
             @Override
             public void callback() {
                 hideProgress();
@@ -221,5 +225,12 @@ public class ArticleChooserActivity extends BaseActivity {
         });
         return true;
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(listenerRegistration != null)
+            listenerRegistration.remove();
     }
 }

@@ -10,4 +10,19 @@
     <include layout="@layout/pleasewait"></include>
     <include layout="@layout/baselist"></include>
 
+    <android:android.support.design.widget.FloatingActionButton
+        android:id="@+id/button"
+        layout_height="wrap_content"
+        layout_width="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:src="@drawable/ic_add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="76dp"
+        android:layout_marginRight="20dp">
+    </android:android.support.design.widget.FloatingActionButton>
+
 </android.support.design.widget.CoordinatorLayout>

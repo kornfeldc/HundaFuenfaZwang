@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.firestore.ListenerRegistration;
+
 import java.util.Vector;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
@@ -21,6 +23,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseList;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Sale;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.SaleArticle;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
 
 /**
  * Created by Christian on 23.02.2018.
@@ -35,6 +38,7 @@ public class SalesFragment extends BaseFragment {
 
     private FloatingActionButton fab;
     private String search = "";
+    private ListenerRegistration listenerRegistration;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +75,7 @@ public class SalesFragment extends BaseFragment {
         });
 
         showProgress();
-        Sale.listen(sales, new Sale.OnListChanged() {
+        listenerRegistration = Sale.listen(sales, getContext(), new Sale.OnListChanged() {
             @Override
             public void callback() {
                 hideProgress();
@@ -94,8 +98,17 @@ public class SalesFragment extends BaseFragment {
 
     private void openSale(Sale sale) {
         Intent intent = new Intent(getActivity(), SaleActivity.class);
-        if(sale != null)
-            intent.putExtra("saleId", sale.getReference().getId());
+        if(sale != null) {
+            //intent.putExtra("saleId", sale.getReference().getId());
+            intent.putExtra("saleId", Params.setParams(sale));
+        }
         startActivity(intent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(listenerRegistration != null)
+            listenerRegistration.remove();
     }
 }

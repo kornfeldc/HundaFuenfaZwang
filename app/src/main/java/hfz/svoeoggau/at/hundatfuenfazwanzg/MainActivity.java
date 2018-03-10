@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import hfz.svoeoggau.at.hundatfuenfazwanzg.base.AuthedActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.ArticlesFragment;
@@ -20,7 +21,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.SalesFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.SettingsFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.fragments.StatisticsFragment;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AuthedActivity {
 
     private TextView mTextMessage;
     private BaseFragment fragment;

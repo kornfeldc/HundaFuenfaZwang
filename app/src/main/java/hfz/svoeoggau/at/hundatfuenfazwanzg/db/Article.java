@@ -1,11 +1,16 @@
 package hfz.svoeoggau.at.hundatfuenfazwanzg.db;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -13,6 +18,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -22,7 +28,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.DF;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Security;
 
 /**
  * Created by Christian on 23.02.2018.
@@ -36,6 +45,25 @@ public class Article extends DbObj {
     private double price = 0.0;
     private String category = "";
     private Integer favorite = 0;
+    private String user = "";
+    private String mts = "";
+
+    public String getMts() {
+        return mts;
+    }
+
+    public void setMts(String mts) {
+        this.mts = mts;
+        setMts(DF.CalendarToString(DF.Now(), "dd.MM.yyyy HH:mm:ss"));
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
 
     public String getTitle() {
         return title;
@@ -74,17 +102,31 @@ public class Article extends DbObj {
         this.favorite = favorite;
     }
 
-    public void save() {
+    public void save(Context context) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        setUser(Security.getUser(context));
+        setMts(DF.CalendarToString(DF.Now(), "dd.MM.yyyy HH:mm:ss"));
+
         if(isIdSet())
-            db.collection(COLLECTION).document(getId()).set(this, SetOptions.merge());
+            db.collection(COLLECTION).document(getId()).set(this, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                }
+            });
         else
             db.collection(COLLECTION).add(this)
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                    }
+                })
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        setReference(documentReference);
+                        setId(documentReference.getId());
                     }
                 })
                     .addOnFailureListener(new OnFailureListener() {
@@ -98,11 +140,16 @@ public class Article extends DbObj {
     public void delete() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         if(isIdSet()) {
-            db.collection(COLLECTION).document(getId()).delete();
+            db.collection(COLLECTION).document(getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                }
+            });
         }
     }
 
-    public static void getById(String id, final OnLoadSingle ols) {
+    /*public static void getById(String id, final OnLoadSingle ols) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION)
                 .document(id)
@@ -181,26 +228,38 @@ public class Article extends DbObj {
                         oll.callback(null);
                     }
                 });
-    }
+    }*/
 
     public boolean matchSearch(String search) {
         search = search.toLowerCase();
         return search.equals("") || getTitle().toLowerCase().indexOf(search) >= 0;
     }
 
-    public static void listen(final Vector<Article> actList, final Article.OnListChanged listChanged) {
+    public static ListenerRegistration listen(final Vector<Article> actList, final Context context, final Article.OnListChanged listChanged) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(COLLECTION)
+        ListenerRegistration reg = db.collection(COLLECTION)
                 .orderBy("favorite", Query.Direction.DESCENDING)
                 .orderBy("category")
                 .orderBy("title")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+
+                        if (e != null) {
+                            Log.w("HFZ", "listen:error", e);
+                            if(context!= null){
+                                try {
+                                    Toast.makeText(context, R.string.failed_loading_articles, Toast.LENGTH_LONG).show();
+                                }
+                                catch(Exception ex) {}
+                            }
+                            return;
+                        }
+
                         if(documentSnapshots != null && documentSnapshots.getDocumentChanges() != null) {
                             for (DocumentChange dc : documentSnapshots.getDocumentChanges()) {
                                 Article article = dc.getDocument().toObject(Article.class);
-                                article.setReference(dc.getDocument().getReference());
+                                article.setId(dc.getDocument().getReference().getId());
 
                                 int newIndex = dc.getNewIndex();
                                 int oldIndex = dc.getOldIndex();
@@ -213,7 +272,7 @@ public class Article extends DbObj {
                                         //this can be called even if entry is already in list, so check if its not before adding
                                         boolean alreadyAdded = false;
                                         for (Article a : actList) {
-                                            if (a.getReference().getId().equals(article.getReference().getId()))
+                                            if (a.getId().equals(article.getId()))
                                                 alreadyAdded = true;
                                         }
                                         if (!alreadyAdded)
@@ -222,7 +281,7 @@ public class Article extends DbObj {
                                     case MODIFIED:
                                         //index changes are not handled yet (e.g.: when the name of a article changes, it does not get reordered)
                                         for (Article a : actList) {
-                                            if (a.getReference().getId().equals(article.getReference().getId()))
+                                            if (a.getId().equals(article.getId()))
                                                 idx = i;
                                             i++;
                                         }
@@ -233,7 +292,7 @@ public class Article extends DbObj {
                                         break;
                                     case REMOVED:
                                         for (Article a : actList) {
-                                            if (a.getReference().getId().equals(article.getReference().getId()))
+                                            if (a.getId().equals(article.getId()))
                                                 idx = i;
                                             i++;
                                         }
@@ -248,6 +307,7 @@ public class Article extends DbObj {
                         listChanged.callback();
                     }
                 });
+        return reg;
     }
 
 }

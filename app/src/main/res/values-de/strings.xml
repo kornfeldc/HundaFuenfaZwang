@@ -32,6 +32,7 @@
     <string name="enter_name">Bitte geben Sie einen Namen ein</string>
     <string name="actual_credit">Aktuelles Guthaben</string>
     <string name="credit">Guthaben</string>
+    <string name="credit_short">Guth.</string>
     <string name="add_credit">Guthaben hinzufügen</string>
 
     <string name="article_name">Artikel-Name</string>
@@ -55,4 +56,25 @@
     <string name="actual_selection">Aktuelle Auswahl</string>
 
     <string name="pay">Bezahlen</string>
+    <string name="use_credit">Guthaben verwenden</string>
+    <string name="to_pay">zu bezahlen</string>
+    <string name="incl_tip">inkl. Trinkggeld</string>
+    <string name="tip">Trinkggeld</string>
+    <string name="given">gegeben</string>
+    <string name="retour">retour</string>
+    <string name="remaining_credit">restl. Guth.</string>
+
+    <string name="failed_loading_persons">Fehler beim Laden der Personen</string>
+    <string name="failed_loading_articles">Fehler beim Laden der Artikel</string>
+    <string name="failed_loading_sales">Fehler beim Laden der Verkäufe</string>
+
+    <string name="auth_failed">Nicht eingeloggt</string>
+    <string name="login">Login</string>
+    <string name="username">Benutzername</string>
+    <string name="password">Passwort</string>
+    <string name="auth_wrong">Benutzername oder Passwort falsch</string>
+
+    <string name="open_sales">Offene Posten</string>
+    <string name="payed">Bezahlt</string>
+
 </resources>

@@ -7,19 +7,19 @@ import com.google.firebase.firestore.DocumentReference;
  */
 
 public class SaleArticle {
-    DocumentReference article;
+    String articleId;
 
     String articleText = "";
     double singlePrice;
     double sumPrice;
     double amount;
 
-    public DocumentReference getArticle() {
-        return article;
+    public String getArticleId() {
+        return articleId;
     }
 
-    public void setArticle(DocumentReference article) {
-        this.article = article;
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
     }
 
     public double getSinglePrice() {
@@ -66,7 +66,7 @@ public class SaleArticle {
 
     public static SaleArticle newSaleArticle(Article article) {
         SaleArticle saleArticle = new SaleArticle();
-        saleArticle.setArticle(article.getReference());
+        saleArticle.setArticleId(article.getId());
         saleArticle.setSinglePrice(article.getPrice());
         saleArticle.setAmount(1);
         saleArticle.setSumPrice(article.getPrice());

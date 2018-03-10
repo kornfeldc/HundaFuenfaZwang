@@ -26,76 +26,27 @@
                 android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <EditText
-                    android:id="@+id/textLastName"
+                    android:id="@+id/textUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:inputType="text"
-                    android:hint="@string/lastname"
+                    android:hint="@string/username"
                     android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 
                 <EditText
-                    android:id="@+id/textFirstName"
+                    android:id="@+id/textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:inputType="text"
-                    android:hint="@string/firstname"
+                    android:inputType="textPassword"
+                    android:hint="@string/password"
                     android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageSwap"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_swap"
-                android:backgroundTint="@color/colorAccent"
-                android:layout_gravity="center_vertical">
-            </ImageView>
 
         </LinearLayout>
-
-
-
-        <EditText
-            android:id="@+id/textPhoneNr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:inputType="text"
-            android:hint="@string/phoneNr"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin">
-
-            <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/checkBoxMember"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/isMember" />
-
-            <TextView
-                android:id="@+id/textCredit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/credit"
-                android:gravity="right"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/buttonAddCredit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:backgroundTint="@color/colorAccent"
-            android:text="@string/add_credit" />
 
     </LinearLayout>
 

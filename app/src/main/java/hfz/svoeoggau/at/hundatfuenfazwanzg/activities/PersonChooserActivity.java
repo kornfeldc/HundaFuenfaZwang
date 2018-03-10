@@ -4,33 +4,42 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.ListenerRegistration;
+
 import java.util.Vector;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.adapter.PersonsAdapter;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.base.AuthedActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseList;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Format;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
 
 /**
  * Created by Christian on 03.03.2018.
  */
 
-public class PersonChooserActivity extends BaseActivity {
+public class PersonChooserActivity extends AuthedActivity {
 
     private PersonsAdapter mAdapter;
     private BaseList mList;
     private Vector<Person> persons = new Vector<>();
     private Vector<Person> personsFiltered = new Vector<>();
+    private FloatingActionButton fab;
     private String search = "";
     private Context context;
+    private ListenerRegistration listenerRegistration;
+    static final int CHOOSE_PERSON = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +49,14 @@ public class PersonChooserActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         context = this;
 
+        fab = findViewById(R.id.button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newPerson();
+            }
+        });
+
         mAdapter = new PersonsAdapter(context, R.layout.listitem_person, personsFiltered, new BaseAdapter.IOnItemClickListener() {
             @Override
             public <T> void onItemClick(View view, int position, T item) {
@@ -48,7 +65,7 @@ public class PersonChooserActivity extends BaseActivity {
         });
 
         showProgress();
-        Person.listen(persons, new Person.OnListChanged() {
+        listenerRegistration = Person.listen(persons, context, new Person.OnListChanged() {
             @Override
             public void callback() {
                 hideProgress();
@@ -79,9 +96,27 @@ public class PersonChooserActivity extends BaseActivity {
 
     private void selectPerson(Person person) {
         Intent ret = new Intent();
-        ret.putExtra("personId", person.isDirect ? "" : person.getReference().getId());
+        ret.putExtra("personId", person.isDirect ? "" : Params.setParams(person));
         setResult(RESULT_OK, ret);
         finish();
+    }
+
+    private void newPerson() {
+        Person person = new Person();
+        person.setFirstName(Format.capitalize(search));
+
+        Intent intent = new Intent(context, PersonActivity.class);
+        intent.putExtra("personId", Params.setParams(person));
+        startActivityForResult(intent, CHOOSE_PERSON);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CHOOSE_PERSON && resultCode == RESULT_OK) {
+            Person person = (Person)Params.getParams(data.getStringExtra("personId"));
+            selectPerson(person);
+        }
     }
 
     @Override
@@ -116,5 +151,12 @@ public class PersonChooserActivity extends BaseActivity {
         });
         return true;
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(listenerRegistration != null)
+            listenerRegistration.remove();
     }
 }

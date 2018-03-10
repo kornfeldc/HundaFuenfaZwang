@@ -11,18 +11,26 @@ import java.util.List;
 
 public class DbObj {
 
-    @Exclude
+    /*@Exclude
     private DocumentReference reference;
 
     @Exclude
     public DocumentReference getReference() {
         return reference;
-    }
+    }*/
 
     @Exclude
+    private String id;
+
+    @Exclude
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /*@Exclude
     public void setReference(DocumentReference reference) {
         this.reference = reference;
-    }
+    }*/
 
     public interface OnLoadSingle {
         void callback(Object obj);
@@ -42,13 +50,15 @@ public class DbObj {
 
     @Exclude
     public boolean isIdSet() {
-        return (reference != null && reference.getId() != null);
+        //return (reference != null && reference.getId() != null);
+        return id!= null && !id.isEmpty();
     }
 
     @Exclude
     public String getId() {
         if(isIdSet())
-            return reference.getId();
+            return id;
+            //return reference.getId();
         return "";
     }
 }

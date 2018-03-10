@@ -1,5 +1,6 @@
 package hfz.svoeoggau.at.hundatfuenfazwanzg.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.Vector;
 
@@ -17,6 +20,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseFragment;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseList;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Article;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
 
 /**
  * Created by Christian on 23.02.2018.
@@ -29,6 +33,7 @@ public class ArticlesFragment extends BaseFragment {
     private Vector<Article> articlesFiltered = new Vector<>();
     private FloatingActionButton fab;
     private String search = "";
+    private ListenerRegistration listenerRegistration;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +62,7 @@ public class ArticlesFragment extends BaseFragment {
             }
         });
 
+
         setOnSearchListener(new OnSearch() {
             @Override
             public void search(String searchStr) {
@@ -67,7 +73,7 @@ public class ArticlesFragment extends BaseFragment {
         });
 
         showProgress();
-        Article.listen(articles, new Article.OnListChanged() {
+        listenerRegistration = Article.listen(articles, getContext(), new Article.OnListChanged() {
             @Override
             public void callback() {
                 createFiltered();
@@ -90,8 +96,17 @@ public class ArticlesFragment extends BaseFragment {
 
     private void openArticle(Article article) {
         Intent intent = new Intent(getActivity(), ArticleActivity.class);
-        if(article != null)
-            intent.putExtra("articleId", article.getReference().getId());
+        if(article != null) {
+            //intent.putExtra("articleId", article.getReference().getId());
+            intent.putExtra("articleId", Params.setParams(article));
+        }
         startActivity(intent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(listenerRegistration != null)
+            listenerRegistration.remove();
     }
 }

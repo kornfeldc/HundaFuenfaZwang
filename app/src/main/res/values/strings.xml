@@ -31,6 +31,7 @@
     <string name="enter_name">Please enter a name</string>
     <string name="actual_credit">Actual Credit</string>
     <string name="credit">Credit</string>
+    <string name="credit_short">Credit</string>
     <string name="add_credit">Add credit</string>
 
     <string name="article_name">Article-Name</string>
@@ -54,4 +55,24 @@
     <string name="actual_selection">Actual Selection</string>
 
     <string name="pay">Pay</string>
+    <string name="use_credit">Use credit</string>
+    <string name="to_pay">to pay</string>
+    <string name="incl_tip">incl. Tip</string>
+    <string name="tip">Tip</string>
+    <string name="given">given</string>
+    <string name="retour">retour</string>
+    <string name="remaining_credit">remain. credit</string>
+
+    <string name="failed_loading_persons">Error on loading persons</string>
+    <string name="failed_loading_articles">Error on loading articles</string>
+    <string name="failed_loading_sales">Error on loading sales</string>
+
+    <string name="auth_failed">Not authenticated</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="auth_wrong">Username or Password wrong</string>
+
+    <string name="open_sales">Open Positions</string>
+    <string name="payed">Payed</string>
 </resources>

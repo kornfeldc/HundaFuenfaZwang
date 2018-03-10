@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.ListenerRegistration;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.Vector;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.adapter.ArticlesAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.adapter.SaleArticlesAdapter;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.base.AuthedActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseList;
@@ -38,12 +41,12 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
  * Created by Christian on 25.02.2018.
  */
 
-public class SaleActivity extends BaseActivity {
+public class SaleActivity extends AuthedActivity {
     boolean newSale = true;
     boolean first = true;
     Sale sale;
 
-    TextView textAvatar, textName, textSum, textDay;
+    TextView textAvatar, textName, textSum, textDay, textCredit;
     Button buttonAddArticle;
     CardView cardPerson;
     FloatingActionButton fabOk, fabPay;
@@ -57,6 +60,8 @@ public class SaleActivity extends BaseActivity {
     private SaleArticlesAdapter mAdapter;
     private BaseList mList;
     private Vector<SaleArticle> saleArticles = new Vector<>();
+
+    ListenerRegistration listenerRegistration;
 
 
     @Override
@@ -73,6 +78,7 @@ public class SaleActivity extends BaseActivity {
         textName = (TextView)findViewById(R.id.textName);
         textSum = (TextView)findViewById(R.id.textSum);
         textDay = (TextView)findViewById(R.id.textDay);
+        textCredit = (TextView)findViewById(R.id.textCredit);
         buttonAddArticle = (Button)findViewById(R.id.buttonAddArticle);
         fabOk = (FloatingActionButton)findViewById(R.id.buttonOk);
         fabOk.setOnClickListener(new View.OnClickListener() {
@@ -107,14 +113,18 @@ public class SaleActivity extends BaseActivity {
         mAdapter = new SaleArticlesAdapter(context, R.layout.listitem_sale_pos, saleArticles, new SaleArticlesAdapter.IOnPosActionListener() {
             @Override
             public void onAdd(String articleId) {
-                sale.addArticle(articleId, 1);
-                loadUI();
+                if(sale.getPayed() != 1) {
+                    sale.addArticle(articleId, 1);
+                    loadUI();
+                }
             }
 
             @Override
             public void onRemove(String articleId) {
-                sale.addArticle(articleId, -1);
-                loadUI();
+                if(sale.getPayed() != 1) {
+                    sale.addArticle(articleId, -1);
+                    loadUI();
+                }
             }
         });
 
@@ -124,7 +134,10 @@ public class SaleActivity extends BaseActivity {
 
         if(!saleId.isEmpty()) {
             newSale = false;
-            showProgress();
+            sale = (Sale)Params.getParams(saleId);
+            loadUI();
+            //showProgress();
+            /*
             Sale.getById(saleId, new DbObj.OnLoadSingle() {
                 @Override
                 public void callback(Object obj) {
@@ -132,7 +145,7 @@ public class SaleActivity extends BaseActivity {
                     sale = (Sale)obj;
                     loadUI();
                 }
-            });
+            });*/
         }
         else {
             sale = Sale.newSale(null);
@@ -143,10 +156,35 @@ public class SaleActivity extends BaseActivity {
 
     private void loadUI() {
 
-        if(sale.getPerson() != null) {
+        textCredit.setText("");
+
+        if(sale.getPayed() == 1) {
+            fabPay.setVisibility(View.GONE);
+            fabOk.setVisibility(View.GONE);
+            buttonAddArticle.setVisibility(View.GONE);
+            textSum.setTextColor(getResources().getColor(R.color.colorDone));
+        }
+
+        if(!sale.getPersonId().isEmpty()) {
             getSupportActionBar().setTitle(newSale ? getResources().getString(R.string.new_sale) : Person.getName(sale.getPersonLastName(), sale.getPersonFirstName()) );
             textName.setText(Person.getName(sale.getPersonLastName(), sale.getPersonFirstName()));
             textAvatar.setText(Person.getShortName(sale.getPersonLastName(), sale.getPersonFirstName()));
+
+            if(listenerRegistration != null)
+                listenerRegistration.remove();
+
+            listenerRegistration = Person.listenToId(sale.getPersonId(), context, new DbObj.OnLoadSingle() {
+                @Override
+                public void callback(Object obj) {
+                    Person person = (Person)obj;
+                    if(person.getCredit() > 0) {
+                        String credit = getResources().getString(R.string.credit_short) + ": ";
+                        credit += Format.doubleToCurrency(person.getCredit());
+                        textCredit.setText(credit);
+                    }
+                }
+            });
+
         }
         else {
             getSupportActionBar().setTitle(newSale ? getResources().getString(R.string.new_sale) : getResources().getString(R.string.person_direct));
@@ -170,24 +208,33 @@ public class SaleActivity extends BaseActivity {
     }
 
     private void save() {
-        sale.save(null);
-        this.finish();
-    }
-
-    private void pay() {
         showProgress();
-        sale.save(new DbObj.OnCallback() {
+        sale.save(this,null);
+        this.finish();
+        /*sale.save(new DbObj.OnCallback() {
             @Override
             public void callback() {
                 hideProgress();
-                openPay();
+                ((Activity)context).finish();
             }
-        });
+        });*/
+    }
+
+    private void pay() {
+        openPay();
+        /*showProgress();
+        sale.save(new DbObj.OnCallback() {
+            @Override
+            public void callback() {
+                openPay();
+                hideProgress();
+            }
+        });*/
     }
 
     private void openPay() {
         Intent intent = new Intent(context, PayActivity.class);
-        intent.putExtra("saleId", sale.getReference().getId());
+        intent.putExtra("saleId", Params.setParams(sale));
         startActivityForResult(intent, PAY);
     }
 
@@ -204,9 +251,13 @@ public class SaleActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == CHOOSE_PERSON && resultCode == RESULT_OK) {
+
+
+
             String personId = data.getStringExtra("personId");
+
             if(personId == null || personId.isEmpty()) { //directsale
-                sale.setPerson(null);
+                sale.setPersonId("");
                 sale.setPersonLastName("");
                 sale.setPersonFirstName("");
                 loadUI();
@@ -217,6 +268,18 @@ public class SaleActivity extends BaseActivity {
                 }
             }
             else {
+
+                Person person = (Person)Params.getParams(personId);
+                sale.setPersonId(person.getId());
+                sale.setPersonFirstName(person.getFirstName());
+                sale.setPersonLastName(person.getLastName());
+                loadUI();
+
+                if(newSale && first) {
+                    first=false;
+                    chooseArticle();
+                }
+                /*
                 showProgress();
                 Person.getById(personId, new DbObj.OnLoadSingle() {
                     @Override
@@ -233,7 +296,7 @@ public class SaleActivity extends BaseActivity {
                             chooseArticle();
                         }
                     }
-                });
+                });*/
             }
         }
         else if(requestCode == CHOOSE_ARTICLE && resultCode == RESULT_OK) {
@@ -250,6 +313,9 @@ public class SaleActivity extends BaseActivity {
                 loadUI();
             }
         }
+        else if(requestCode == PAY && resultCode == RESULT_OK) {
+            this.finish();
+        }
     }
 
     private void askDelete() {
@@ -260,7 +326,7 @@ public class SaleActivity extends BaseActivity {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        sale.delete();
+                        sale.delete(context);
                         ((Activity)context).finish();
                     }
                 })

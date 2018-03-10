@@ -16,18 +16,20 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.base.AuthedActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Article;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.enums.Category;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Format;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
 
 /**
  * Created by Christian on 25.02.2018.
  */
 
-public class ArticleActivity extends BaseActivity {
+public class ArticleActivity extends AuthedActivity {
 
     boolean newArticle = true;
     Article article = new Article();
@@ -73,7 +75,9 @@ public class ArticleActivity extends BaseActivity {
 
         if(!articleId.isEmpty()) {
             newArticle = false;
-            showProgress();
+            article = (Article) Params.getParams(articleId);
+            loadUI();
+            /*showProgress();
             Article.getById(articleId, new DbObj.OnLoadSingle() {
                 @Override
                 public void callback(Object obj) {
@@ -81,7 +85,7 @@ public class ArticleActivity extends BaseActivity {
                     article = (Article)obj;
                     loadUI();
                 }
-            });
+            });*/
         }
         else
             loadUI();
@@ -109,7 +113,7 @@ public class ArticleActivity extends BaseActivity {
             article.setPrice(Format.stringToDouble(textPrice.getText().toString()));
             article.setFavorite(checkBoxFavorite.isChecked() ? 1 : 0);
             article.setCategory(Category.ARR[index]);
-            article.save();
+            article.save(this);
             this.finish();
         }
     }
@@ -158,5 +162,4 @@ public class ArticleActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

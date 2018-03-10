@@ -15,15 +15,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textDay"
-            android:text="01.01.2018"
-            android:textSize="@dimen/fontsize_listheader"
-            android:textColor="@color/colorHeader"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin">
-        </TextView>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/textDay"
+                android:text="01.01.2018"
+                android:textSize="@dimen/fontsize_listheader"
+                android:textColor="@color/colorHeader"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin">
+            </TextView>
+
+            <TextView
+                android:id="@+id/textSum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sum"
+                android:textColor="@color/colorOpen"
+                android:maxLines="1"
+                android:textSize="@dimen/fontsize_h2"/>
+
+        </LinearLayout>
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -54,7 +71,7 @@
 
                 <TextView
                     android:id="@+id/textName"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="center"
@@ -63,9 +80,236 @@
                     tools:layout_editor_absoluteX="16dp"
                     tools:layout_editor_absoluteY="16dp" />
 
+                <TextView
+                    android:id="@+id/textCredit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="TextView"
+                    android:textSize="@dimen/fontsize_h4"/>
+
+
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkUseCredit"
+            android:text="@string/use_credit"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/activity_horizontal_margin">
+
+            <LinearLayout
+                android:id="@+id/layoutToPay"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_weight="1">
+                <EditText
+                    android:id="@+id/textToPay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontsize_pay_big"
+                    android:textColor="@color/colorOpen"
+                    android:text="€ 0,00"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    >
+                </EditText>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontsize_subtext"
+                    android:text="@string/to_pay"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutInclTip"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_weight="1">
+                <EditText
+                    android:id="@+id/textInclTip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontsize_pay_big"
+                    android:textColor="@color/colorOpen"
+                    android:text="€ 0,00"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789,"
+                    >
+                </EditText>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontsize_subtext"
+                    android:text="@string/incl_tip"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/margin_half">
+
+                    <TextView
+                        android:id="@+id/avatarInclTipAdd"
+                        android:layout_width="@dimen/avatar_size_pay"
+                        android:layout_height="@dimen/avatar_size_pay"
+                        android:background="@drawable/circlebg_add"
+                        android:textColor="@color/colorPrimaryInverse"
+                        android:text="+"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/avatar_font"
+                        android:layout_marginRight="@dimen/margin_q">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/avatarInclTipRemove"
+                        android:layout_width="@dimen/avatar_size_pay"
+                        android:layout_height="@dimen/avatar_size_pay"
+                        android:background="@drawable/circlebg_remove"
+                        android:textColor="@color/colorPrimaryInverse"
+                        android:text="-"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/avatar_font">
+                    </TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutGiven"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_weight="1">
+                <EditText
+                    android:id="@+id/textGiven"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontsize_pay_big"
+                    android:textColor="@color/colorDone"
+                    android:text="€ 0,00"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789,"
+                    >
+                </EditText>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontsize_subtext"
+                    android:text="@string/given"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/margin_half">
+
+                    <TextView
+                        android:id="@+id/avatarGivenAdd"
+                        android:layout_width="@dimen/avatar_size_pay"
+                        android:layout_height="@dimen/avatar_size_pay"
+                        android:background="@drawable/circlebg_add"
+                        android:textColor="@color/colorPrimaryInverse"
+                        android:text="+"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/avatar_font"
+                        android:layout_marginRight="@dimen/margin_q">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/avatarGivenRemove"
+                        android:layout_width="@dimen/avatar_size_pay"
+                        android:layout_height="@dimen/avatar_size_pay"
+                        android:background="@drawable/circlebg_remove"
+                        android:textColor="@color/colorPrimaryInverse"
+                        android:text="-"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/avatar_font">
+                    </TextView>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutRetour"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_weight="1">
+                <EditText
+                    android:id="@+id/textRetour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontsize_pay_big"
+                    android:textColor="@color/colorPrimary"
+                    android:text="€ 0,00"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    >
+                </EditText>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontsize_subtext"
+                    android:text="@string/retour"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutRemainingCredit"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_weight="1">
+                <EditText
+                    android:id="@+id/textRemainingCredit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontsize_pay_big"
+                    android:textColor="@color/colorPrimary"
+                    android:text="€ 0,00"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    >
+                </EditText>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontsize_subtext"
+                    android:text="@string/remaining_credit"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

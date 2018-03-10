@@ -43,14 +43,14 @@ public class SaleArticlesAdapter extends BaseAdapter {
         TextView textArticle = (TextView)holder.layout.findViewById(R.id.textArticle);
         TextView textPrice = (TextView)holder.layout.findViewById(R.id.textPrice);
 
-        avatarAdd.setTag(saleArticle.getArticle().getId());
+        avatarAdd.setTag(saleArticle.getArticleId());
         avatarAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 posActionListener.onAdd(view.getTag().toString());
             }
         });
-        avatarRemove.setTag(saleArticle.getArticle().getId());
+        avatarRemove.setTag(saleArticle.getArticleId());
         avatarRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

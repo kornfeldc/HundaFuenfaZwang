@@ -5,16 +5,19 @@ import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,16 +25,18 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.base.AuthedActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Format;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
 
 /**
  * Created by Christian on 25.02.2018.
  */
 
-public class PersonActivity extends BaseActivity {
+public class PersonActivity extends AuthedActivity {
     boolean newPerson = true;
     Person person = new Person();
 
@@ -40,6 +45,7 @@ public class PersonActivity extends BaseActivity {
     CheckBox checkBoxMember;
     Button buttonAddCredit;
     FloatingActionButton fab;
+    ImageView imageSwap;
 
     private Context context;
 
@@ -58,7 +64,7 @@ public class PersonActivity extends BaseActivity {
         checkBoxMember = (CheckBox)findViewById(R.id.checkBoxMember);
         textCredit = (TextView)findViewById(R.id.textCredit);
         buttonAddCredit = (Button)findViewById(R.id.buttonAddCredit);
-
+        imageSwap = (ImageView)findViewById(R.id.imageSwap);
         fab = (FloatingActionButton)findViewById(R.id.button);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +83,7 @@ public class PersonActivity extends BaseActivity {
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
                 input.setText("20");
                 input.setRawInputType(Configuration.KEYBOARD_12KEY);
+                input.setGravity(Gravity.CENTER_HORIZONTAL);
                 alert.setView(input);
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -98,13 +105,24 @@ public class PersonActivity extends BaseActivity {
             }
         });
 
+        imageSwap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String lastName = textLastName.getText().toString();
+                textLastName.setText(textFirstName.getText());
+                textFirstName.setText(lastName);
+            }
+        });
+
         String personId = getIntent().getStringExtra("personId");
         if(personId == null)
             personId = "";
 
         if(!personId.isEmpty()) {
             newPerson = false;
-            showProgress();
+            person = (Person) Params.getParams(personId);
+            loadUI();
+            /*showProgress();
             Person.getById(personId, new DbObj.OnLoadSingle() {
                 @Override
                 public void callback(Object obj) {
@@ -112,7 +130,7 @@ public class PersonActivity extends BaseActivity {
                     person = (Person)obj;
                     loadUI();
                 }
-            });
+            });*/
         }
         else
             loadUI();
@@ -144,8 +162,17 @@ public class PersonActivity extends BaseActivity {
         else {
             person.setPhoneNr(textPhoneNr.getText().toString());
             person.setMember(checkBoxMember.isChecked() ? 1 : 0);
-            person.save();
-            this.finish();
+            person.save(this, new DbObj.OnCallback() {
+                @Override
+                public void callback() {
+                    Intent ret = new Intent();
+                    ret.putExtra("personId", Params.setParams(person));
+                    ((Activity)context).setResult(RESULT_OK, ret);
+                    ((Activity)context).finish();
+                }
+            });
+
+
         }
     }
 

@@ -1,10 +1,14 @@
 package hfz.svoeoggau.at.hundatfuenfazwanzg.db;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -12,8 +16,10 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import org.w3c.dom.Document;
 
@@ -22,9 +28,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.classes.CreditHistory;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.DF;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Security;
 
 /**
  * Created by Christian on 23.02.2018.
@@ -42,6 +50,24 @@ public class Person extends DbObj {
     private String phoneNr  ="";
     private Double credit = 0.0;
     private List<CreditHistory> creditHistory = new Vector<CreditHistory>();
+    private String user = "";
+    private String mts = "";
+
+    public String getMts() {
+        return mts;
+    }
+
+    public void setMts(String mts) {
+        this.mts = mts;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
 
     @Exclude
     public boolean isDirect=false;
@@ -143,15 +169,33 @@ public class Person extends DbObj {
         this.credit += credit;
     }
 
-    public void save() {
+    public void save(Context context, final OnCallback onCallback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        setUser(Security.getUser(context));
+        setMts(DF.CalendarToString(DF.Now(), "dd.MM.yyyy HH:mm:ss"));
+
         if(isIdSet())
-            db.collection(COLLECTION).document(getId()).set(this);
+            db.collection(COLLECTION).document(getId()).set(this, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(onCallback != null)
+                        onCallback.callback();
+                }
+            });
         else
-            db.collection(COLLECTION).add(this).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            db.collection(COLLECTION).add(this).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentReference> task) {
+
+
+                }
+            }).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
-                    setReference(documentReference);
+                    setId(documentReference.getId());
+                    if(onCallback != null)
+                        onCallback.callback();
                 }
             });
     }
@@ -159,7 +203,12 @@ public class Person extends DbObj {
     public void delete() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         if(isIdSet()) {
-            db.collection(COLLECTION).document(getId()).delete();
+            db.collection(COLLECTION).document(getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                }
+            });
         }
     }
 
@@ -173,7 +222,7 @@ public class Person extends DbObj {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()) {
                             Person person = documentSnapshot.toObject(Person.class);
-                            person.setReference(documentSnapshot.getReference());
+                            person.setId(documentSnapshot.getReference().getId());
                             ols.callback(person);
                         }
                         else
@@ -188,7 +237,7 @@ public class Person extends DbObj {
                 });
     }
 
-    public static void load(String search, final OnLoadList oll) {
+    /*public static void load(String search, final OnLoadList oll) {
         //todo like name
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION)
@@ -216,25 +265,66 @@ public class Person extends DbObj {
                     }
                 });
     }
+    */
 
     public boolean matchSearch(String search) {
         search = search.toLowerCase();
         return search.equals("") || getLastName().toLowerCase().indexOf(search) >= 0 || getFirstName().toLowerCase().indexOf(search) >= 0;
     }
 
-    public static void listen(final Vector<Person> actList, final OnListChanged listChanged) {
+    public static ListenerRegistration listenToId(String id, final Context context, final OnLoadSingle loadSingle) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(COLLECTION)
+        return db.collection(COLLECTION)
+                .document(id)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+
+                        if (e != null) {
+                            Log.w("HFZ", "listen:error", e);
+                            if(context!= null){
+                                try {
+                                    Toast.makeText(context, R.string.failed_loading_persons, Toast.LENGTH_LONG).show();
+                                }
+                                catch(Exception ex) {}
+                            }
+                            return;
+                        }
+
+                        if(documentSnapshot != null && loadSingle != null) {
+                            Person person = documentSnapshot.toObject(Person.class);
+                            person.setId(documentSnapshot.getReference().getId());
+                            loadSingle.callback(person);
+                        }
+                    }
+                });
+    }
+
+    public static ListenerRegistration listen(final Vector<Person> actList, final Context context, final OnListChanged listChanged) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ListenerRegistration reg = db.collection(COLLECTION)
                 .orderBy("member", Query.Direction.DESCENDING)
                 .orderBy(LAST_NAME_FIRST ? "lastName" : "firstName")
                 .orderBy(LAST_NAME_FIRST ? "firstName" : "lastName")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+
+                        if (e != null) {
+                            Log.w("HFZ", "listen:error", e);
+                            if(context!= null){
+                                try {
+                                    Toast.makeText(context, R.string.failed_loading_persons, Toast.LENGTH_LONG).show();
+                                }
+                                catch(Exception ex) {}
+                            }
+                            return;
+                        }
+
                         if(documentSnapshots != null && documentSnapshots.getDocumentChanges() != null) {
                             for (DocumentChange dc : documentSnapshots.getDocumentChanges()) {
                                 Person person = dc.getDocument().toObject(Person.class);
-                                person.setReference(dc.getDocument().getReference());
+                                person.setId(dc.getDocument().getReference().getId());
 
                                 int newIndex = dc.getNewIndex();
                                 int oldIndex = dc.getOldIndex();
@@ -247,7 +337,7 @@ public class Person extends DbObj {
                                         //this can be called even if entry is already in list, so check if its not before adding
                                         boolean alreadyAdded = false;
                                         for (Person p : actList) {
-                                            if (p.getReference().getId().equals(person.getReference().getId()))
+                                            if (p.getId().equals(person.getId()))
                                                 alreadyAdded = true;
                                         }
                                         if (!alreadyAdded)
@@ -256,7 +346,7 @@ public class Person extends DbObj {
                                     case MODIFIED:
                                         //index changes are not handled yet (e.g.: when the name of a person changes, it does not get reordered)
                                         for (Person p : actList) {
-                                            if (p.getReference().getId().equals(person.getReference().getId()))
+                                            if (p.getId().equals(person.getId()))
                                                 idx = i;
                                             i++;
                                         }
@@ -267,7 +357,7 @@ public class Person extends DbObj {
                                         break;
                                     case REMOVED:
                                         for (Person p : actList) {
-                                            if (p.getReference().getId().equals(person.getReference().getId()))
+                                            if (p.getId().equals(person.getId()))
                                                 idx = i;
                                             i++;
                                         }
@@ -282,5 +372,6 @@ public class Person extends DbObj {
                         listChanged.callback();
                     }
                 });
+        return reg;
     }
 }
