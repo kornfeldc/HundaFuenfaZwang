@@ -31,6 +31,8 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
 
 public class PayActivity extends AuthedActivity {
 
+    private static final double ADDAMOUNT = 0.5;
+
     Sale sale;
     Person person;
     private Context context;
@@ -122,28 +124,28 @@ public class PayActivity extends AuthedActivity {
         avatarInclTipAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                modifyInclTip(1);
+                modifyInclTip(ADDAMOUNT);
             }
         });
         avatarInclTipRemove = (TextView)findViewById(R.id.avatarInclTipRemove);
         avatarInclTipRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                modifyInclTip(-1);
+                modifyInclTip(ADDAMOUNT*-1);
             }
         });
         avatarGivenAdd = (TextView)findViewById(R.id.avatarGivenAdd);
         avatarGivenAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                modifyGiven(1);
+                modifyGiven(ADDAMOUNT);
             }
         });
         avatarGivenRemove = (TextView)findViewById(R.id.avatarGivenRemove);
         avatarGivenRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                modifyGiven(-1);
+                modifyGiven(ADDAMOUNT*-1);
             }
         });
 
@@ -262,7 +264,8 @@ public class PayActivity extends AuthedActivity {
         given = 0;
         retour = 0;
         if(topay > 0) {
-            incltip = Math.ceil(topay);
+            //incltip = Math.ceil(topay);
+            incltip = topay;
             given = incltip;
             retour = 0;
         }
@@ -280,12 +283,12 @@ public class PayActivity extends AuthedActivity {
 
     private void modifyInclTip(double amount) {
 
-        if(amount > 0 && Math.ceil(incltip) != incltip)
-            incltip = Math.ceil(incltip);
+        if(amount > 0 && ceil50(incltip) != incltip)
+            incltip = ceil50(incltip);
         else
             incltip += amount;
 
-        incltip = Math.ceil(incltip);
+        incltip = ceil50(incltip);
 
         if(incltip < 0)
             incltip = 0;
@@ -339,6 +342,13 @@ public class PayActivity extends AuthedActivity {
         sale.save(this,null);
         this.setResult(RESULT_OK);
         this.finish();
+    }
+
+    private Double ceil50(double val) {
+        double floorVal = Math.floor(val);
+        if(val >= floorVal+0.5)
+            return Math.ceil(val);
+        return floorVal+0.5;
     }
 
     @Override

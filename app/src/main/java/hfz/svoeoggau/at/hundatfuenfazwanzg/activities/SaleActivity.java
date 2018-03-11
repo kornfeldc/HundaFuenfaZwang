@@ -19,6 +19,8 @@ import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -34,6 +36,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Sale;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.SaleArticle;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.DF;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Format;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
 
@@ -100,7 +103,8 @@ public class SaleActivity extends AuthedActivity {
         cardPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                choosePerson();
+                if(sale.getPayed() != 1)
+                    choosePerson();
             }
         });
         buttonAddArticle.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +114,44 @@ public class SaleActivity extends AuthedActivity {
             }
         });
 
-        mAdapter = new SaleArticlesAdapter(context, R.layout.listitem_sale_pos, saleArticles, new SaleArticlesAdapter.IOnPosActionListener() {
+        String saleId = getIntent().getStringExtra("saleId");
+        if(saleId == null)
+            saleId = "";
+
+        if(!saleId.isEmpty()) {
+            newSale = false;
+            sale = (Sale)Params.getParams(saleId);
+            loadAdapter();
+            loadUI();
+            //showProgress();
+            /*
+            Sale.getById(saleId, new DbObj.OnLoadSingle() {
+                @Override
+                public void callback(Object obj) {
+                    hideProgress();
+                    sale = (Sale)obj;
+                    loadUI();
+                }
+            });*/
+        }
+        else {
+            sale = Sale.newSale(null);
+
+            String day = getIntent().getStringExtra("day");
+            if(!day.isEmpty()) {
+                Calendar cal = DF.StringToCalendar(day, "dd.MM.yyyy");
+                sale.setDay(cal.getTime());
+                sale.setDayStr(day);
+            }
+
+            loadAdapter();
+            loadUI();
+            choosePerson();
+        }
+    }
+
+    private void loadAdapter() {
+        mAdapter = new SaleArticlesAdapter(context, R.layout.listitem_sale_pos, sale, saleArticles, new SaleArticlesAdapter.IOnPosActionListener() {
             @Override
             public void onAdd(String articleId) {
                 if(sale.getPayed() != 1) {
@@ -127,31 +168,6 @@ public class SaleActivity extends AuthedActivity {
                 }
             }
         });
-
-        String saleId = getIntent().getStringExtra("saleId");
-        if(saleId == null)
-            saleId = "";
-
-        if(!saleId.isEmpty()) {
-            newSale = false;
-            sale = (Sale)Params.getParams(saleId);
-            loadUI();
-            //showProgress();
-            /*
-            Sale.getById(saleId, new DbObj.OnLoadSingle() {
-                @Override
-                public void callback(Object obj) {
-                    hideProgress();
-                    sale = (Sale)obj;
-                    loadUI();
-                }
-            });*/
-        }
-        else {
-            sale = Sale.newSale(null);
-            loadUI();
-            choosePerson();
-        }
     }
 
     private void loadUI() {

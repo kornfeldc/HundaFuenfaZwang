@@ -16,10 +16,12 @@
             android:label="@string/app_name_short">
         </activity>
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".activities.PersonActivity"
             android:label="@string/person">
         </activity>
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".activities.ArticleActivity"
             android:label="@string/article">
         </activity>
@@ -38,6 +40,10 @@
         <activity
             android:name=".activities.PayActivity"
             android:label="@string/pay">
+        </activity>
+        <activity
+            android:name=".activities.SaleMenuActivity"
+            android:label="@string/choose_day">
         </activity>
         <activity
             android:name=".activities.LoginActivity"

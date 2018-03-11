@@ -337,13 +337,96 @@ public class Sale extends DbObj {
         return search.equals("") || getPersonLastName().toLowerCase().indexOf(search) >= 0 || getPersonFirstName().toLowerCase().indexOf(search) >= 0;
     }
 
-    public static ListenerRegistration listen(final Vector<Sale> actList, final Context context, final OnListChanged listChanged) {
+    public static ListenerRegistration listen(final Vector<Sale> actList, String day,  final Context context, final OnListChanged listChanged) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ListenerRegistration reg = db.collection(COLLECTION)
-                .whereEqualTo("dayStr", DF.CalendarToString())
+                .whereEqualTo("dayStr", day)
                 .orderBy("payed")
                 .orderBy(Person.LAST_NAME_FIRST ? "personLastName" : "personFirstName")
                 .orderBy(Person.LAST_NAME_FIRST ? "personFirstName" : "personLastName")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+
+                        if (e != null) {
+                            Log.w("HFZ", "listen:error", e);
+                            if(context!= null){
+                                try {
+                                    Toast.makeText(context, R.string.failed_loading_sales, Toast.LENGTH_LONG).show();
+                                }
+                                catch(Exception ex) {}
+                            }
+                            return;
+                        }
+
+                        if(documentSnapshots != null && documentSnapshots.getDocumentChanges() != null) {
+                            for (DocumentChange dc : documentSnapshots.getDocumentChanges()) {
+                                Sale sale = dc.getDocument().toObject(Sale.class);
+                                sale.setId(dc.getDocument().getReference().getId());
+
+                                int newIndex = dc.getNewIndex();
+                                int oldIndex = dc.getOldIndex();
+
+                                int idx = -1;
+                                int i = 0;
+
+                                switch (dc.getType()) {
+                                    case ADDED:
+                                        //this can be called even if entry is already in list, so check if its not before adding
+                                        boolean alreadyAdded = false;
+                                        for (Sale p : actList) {
+                                            if (p.getId().equals(sale.getId()))
+                                                alreadyAdded = true;
+                                        }
+                                        if (!alreadyAdded)
+                                            actList.insertElementAt(sale, newIndex);
+                                        break;
+                                    case MODIFIED:
+                                        //index changes are not handled yet (e.g.: when the name of a person changes, it does not get reordered)
+                                        for (Sale p : actList) {
+                                            if (p.getId().equals(sale.getId()))
+                                                idx = i;
+                                            i++;
+                                        }
+
+                                        if (idx >= 0)
+                                            actList.set(idx, sale);
+
+                                        try {
+                                            if (newIndex != oldIndex && oldIndex == idx) {
+                                                Sale s = actList.get(oldIndex);
+                                                actList.remove(oldIndex);
+                                                actList.add(newIndex, s);
+                                            }
+                                        }
+                                        catch(Exception ex) {}
+
+                                        //Log.d(TAG, "Modified city: " + dc.getDocument().getData());
+                                        break;
+                                    case REMOVED:
+                                        for (Sale p : actList) {
+                                            if (p.getId().equals(sale.getId()))
+                                                idx = i;
+                                            i++;
+                                        }
+
+                                        if (idx >= 0)
+                                            actList.remove(idx);
+                                        //Log.d(TAG, "Removed city: " + dc.getDocument().getData());
+                                        break;
+                                }
+                            }
+                        }
+                        listChanged.callback();
+                    }
+                });
+        return reg;
+    }
+
+    public static ListenerRegistration listenAll(final Vector<Sale> actList, final Context context, final OnListChanged listChanged) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ListenerRegistration reg = db.collection(COLLECTION)
+                .orderBy("day", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {

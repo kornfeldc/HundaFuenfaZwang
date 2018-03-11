@@ -75,4 +75,8 @@
 
     <string name="open_sales">Open Positions</string>
     <string name="payed">Payed</string>
+
+    <string name="choose_day">Choose day</string>
+
+    <string name="no_sale">There is no sale for this day.\nTap on + for adding a new one.</string>
 </resources>

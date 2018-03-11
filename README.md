@@ -1,3 +1,12 @@
+## 1.1.0 (10.03.2018)
+### Changed
+* Changed tip estimate behaviour
+* Cannot click on person card in payed sale anymore
+* Hide add/remove buttons in payed sale
+* Show day in sale, choose day on click
+* Sale Menu for overviewing all sale days
+* Infotext in sales when there is no sale for the choosen day
+
 ## 1.0.9 (10.03.2018)
 ### Added
 * Added group headers with sums in in sales list

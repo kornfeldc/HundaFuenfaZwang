@@ -77,4 +77,8 @@
     <string name="open_sales">Offene Posten</string>
     <string name="payed">Bezahlt</string>
 
+    <string name="choose_day">Tag auswählen</string>
+
+    <string name="no_sale">Für diesen Tag gibt es noch keinen Verkauf.\nTippe auf + um einen anzulegen.</string>
+
 </resources>

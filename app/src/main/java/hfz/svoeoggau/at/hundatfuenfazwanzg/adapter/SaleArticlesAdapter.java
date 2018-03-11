@@ -26,10 +26,12 @@ public class SaleArticlesAdapter extends BaseAdapter {
     }
 
     private IOnPosActionListener posActionListener;
+    private Sale sale;
 
-    public SaleArticlesAdapter(Context context, int layoutResource, Vector<?> items, IOnPosActionListener posActionListener) {
+    public SaleArticlesAdapter(Context context, int layoutResource, Sale sale, Vector<?> items, IOnPosActionListener posActionListener) {
         super(context, layoutResource, items, null);
         this.posActionListener = posActionListener;
+        this.sale = sale;
     }
 
 
@@ -43,21 +45,28 @@ public class SaleArticlesAdapter extends BaseAdapter {
         TextView textArticle = (TextView)holder.layout.findViewById(R.id.textArticle);
         TextView textPrice = (TextView)holder.layout.findViewById(R.id.textPrice);
 
-        avatarAdd.setTag(saleArticle.getArticleId());
-        avatarAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                posActionListener.onAdd(view.getTag().toString());
-            }
-        });
-        avatarRemove.setTag(saleArticle.getArticleId());
-        avatarRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                posActionListener.onRemove(view.getTag().toString());
-            }
-        });
-
+        if(sale != null && sale.getPayed() == 1) {
+            avatarAdd.setVisibility(View.GONE);
+            avatarRemove.setVisibility(View.GONE);
+        }
+        else {
+            avatarAdd.setVisibility(View.VISIBLE);
+            avatarAdd.setTag(saleArticle.getArticleId());
+            avatarAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    posActionListener.onAdd(view.getTag().toString());
+                }
+            });
+            avatarRemove.setVisibility(View.VISIBLE);
+            avatarRemove.setTag(saleArticle.getArticleId());
+            avatarRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    posActionListener.onRemove(view.getTag().toString());
+                }
+            });
+        }
         textAmount.setText(String.valueOf((int)saleArticle.getAmount()));
         textArticle.setText(saleArticle.getArticleText());
         textPrice.setText(Format.doubleToCurrency(saleArticle.getSumPrice()));

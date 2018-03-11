@@ -3,6 +3,7 @@ package hfz.svoeoggau.at.hundatfuenfazwanzg;
 import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -104,5 +105,10 @@ public class MainActivity extends AuthedActivity {
         });
         return true;
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
