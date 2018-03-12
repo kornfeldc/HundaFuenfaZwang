@@ -1,3 +1,7 @@
+## 1.1.0 (12.03.2018)
+### Fixed
+* Last item in lists above BottomNavigation not visible
+
 ## 1.1.0 (10.03.2018)
 ### Changed
 * Changed tip estimate behaviour
