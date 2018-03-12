@@ -48,5 +48,5 @@
             android:src="@drawable/ic_star"
             android:tint="@color/colorAccent"/>
     </LinearLayout>
-    <include layout="@layout/last_item_spacer"/>
+    <!--<include layout="@layout/last_item_spacer"/>-->
 </LinearLayout>

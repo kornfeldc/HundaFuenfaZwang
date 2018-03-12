@@ -1,11 +1,8 @@
 package hfz.svoeoggau.at.hundatfuenfazwanzg.base;
 
 import android.app.Fragment;
-import android.widget.ProgressBar;
 
-import java.util.List;
-
-import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.ProgressBarHandler;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.UI;
 
 /**
  * Created by Christian on 23.02.2018.
@@ -28,10 +25,10 @@ public class BaseFragment extends Fragment {
     }
 
     public void showProgress() {
-        ProgressBarHandler.showProgress(getView());
+        UI.showProgress(getView());
     }
 
     public void hideProgress() {
-        ProgressBarHandler.hideProgress(getView());
+        UI.hideProgress(getView());
     }
 }

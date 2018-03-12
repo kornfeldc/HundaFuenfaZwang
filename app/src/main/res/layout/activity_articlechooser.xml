@@ -15,7 +15,12 @@
 
         <include layout="@layout/progressbar"></include>
         <include layout="@layout/pleasewait"></include>
-        <include layout="@layout/baselist"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="60dp">
+            <include layout="@layout/baselist"/>
+        </LinearLayout>
 
         <LinearLayout
             android:visibility="gone"

@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
 
 /**
@@ -12,27 +16,40 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
 
 public class Security {
 
+    private final static String PWHASH = "cb41d253e2c5911dfcbd61c437104875";
     private final static String UPREF = "upref";
 
-    public final static String[] USERNAMES = new String[] {"emu", "ck", "kk", "bar", "hk", "tm", "tu", "vs", "ms"};
+    public static String[] getUserNames(Context context) {
+        String usersCsv = "";
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(context.getAssets().open("users.csv"), "UTF-8"));
 
-    /*
-    SharedPreferences myPrefs = getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
-SharedPreferences.Editor prefsEditor;
-prefsEditor = myPrefs.edit();
-//strVersionName->Any value to be stored
-prefsEditor.putString("STOREDVALUE", strVersionName);
-prefsEditor.commit();
+            // do reading, usually loop until end of file reading
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                //process line
+                usersCsv+=mLine;
+            }
+        } catch (IOException e) {
+            //log the exception
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    //log the exceptionck
+                }
+            }
+        }
 
-//Get Preferenece
-SharedPreferences myPrefs;
-myPrefs = getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
-String StoredValue=myPrefs.getString("STOREDVALUE", "");
-     */
+        return usersCsv.split(",");
+    }
 
     public static boolean auth(Context context, String user, String password) {
-        for(String u : USERNAMES) {
-            if(user.equals(u) && password.equals("og125")) {
+        for(String u : getUserNames(context)) {
+            if(user.equals(u) && Format.md5(password).equals(PWHASH)) {
                 SharedPreferences myPrefs = context.getSharedPreferences(UPREF, Context.MODE_PRIVATE);
                 SharedPreferences.Editor prefsEditor;
                 prefsEditor = myPrefs.edit();

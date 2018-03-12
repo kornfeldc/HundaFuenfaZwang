@@ -3,3 +3,5 @@
 build/
 app/build/
 app/release/
+app/src/main/assets/users.csv
+.app/src/main/assets/users.csv

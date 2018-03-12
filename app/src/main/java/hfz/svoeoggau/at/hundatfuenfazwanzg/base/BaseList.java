@@ -2,6 +2,7 @@ package hfz.svoeoggau.at.hundatfuenfazwanzg.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,5 +71,22 @@ public class BaseList {
 
     public SwipeRefreshLayout getPullToRefresh() {
         return mSwipeRefreshLayout;
+    }
+
+    public void hideFabOnScroll(final FloatingActionButton fab) {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                    fab.hide();
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                    fab.show();
+                }
+            }
+
+        });
     }
 }

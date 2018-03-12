@@ -95,6 +95,6 @@ public class SalesAdapter extends BaseAdapter {
         else
             textPrice.setTextColor(context.getResources().getColor(R.color.colorOpen));
 
-        showLastItemSpacer(holder,position);
+        //showLastItemSpacer(holder,position);
     }
 }

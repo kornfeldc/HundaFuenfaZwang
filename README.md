@@ -6,6 +6,8 @@
 * Show day in sale, choose day on click
 * Sale Menu for overviewing all sale days
 * Infotext in sales when there is no sale for the choosen day
+* Better fab behaviour (hide on scroll down)
+* Login hidden from git
 
 ## 1.0.9 (10.03.2018)
 ### Added

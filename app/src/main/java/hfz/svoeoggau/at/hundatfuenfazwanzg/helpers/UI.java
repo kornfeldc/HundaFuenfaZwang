@@ -13,12 +13,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseList;
 
 /**
  * Created by Christian on 04.03.2018.
  */
 
-public class ProgressBarHandler {
+public class UI {
 
     public static void showProgress(View parent) {
         ProgressBar progressBar = (ProgressBar)parent.findViewById(R.id.progressBar);
@@ -55,5 +56,4 @@ public class ProgressBarHandler {
             }
         }
     }
-
 }

@@ -2,7 +2,7 @@ package hfz.svoeoggau.at.hundatfuenfazwanzg.base;
 
 import android.support.v7.app.AppCompatActivity;
 
-import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.ProgressBarHandler;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.UI;
 
 /**
  * Created by Christian on 25.02.2018.
@@ -10,10 +10,10 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.ProgressBarHandler;
 
 public class BaseActivity extends AppCompatActivity {
     public void showProgress() {
-        ProgressBarHandler.showProgress(getWindow().getDecorView().getRootView());
+        UI.showProgress(getWindow().getDecorView().getRootView());
     }
 
     public void hideProgress() {
-        ProgressBarHandler.hideProgress(getWindow().getDecorView().getRootView());
+        UI.hideProgress(getWindow().getDecorView().getRootView());
     }
 }

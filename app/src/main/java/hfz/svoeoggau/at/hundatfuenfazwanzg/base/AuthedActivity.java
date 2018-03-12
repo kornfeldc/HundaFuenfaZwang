@@ -2,12 +2,8 @@ package hfz.svoeoggau.at.hundatfuenfazwanzg.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
-import hfz.svoeoggau.at.hundatfuenfazwanzg.activities.ArticleActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.activities.LoginActivity;
-import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
-import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.ProgressBarHandler;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Security;
 
 /**

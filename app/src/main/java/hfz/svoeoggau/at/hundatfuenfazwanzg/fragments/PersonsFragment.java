@@ -81,8 +81,10 @@ public class PersonsFragment extends BaseFragment {
             public void callback() {
                 hideProgress();
                 createFiltered();
-                if(mList == null)
+                if(mList == null) {
                     mList = new BaseList(getActivity(), R.id.swipeRefreshLayout, mAdapter);
+                    mList.hideFabOnScroll(fab);
+                }
 
                 mAdapter.notifyDataSetChanged();
             }

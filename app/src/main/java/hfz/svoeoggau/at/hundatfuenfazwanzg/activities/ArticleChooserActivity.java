@@ -130,8 +130,10 @@ public class ArticleChooserActivity extends AuthedActivity {
             public void callback() {
                 hideProgress();
                 createFiltered();
-                if(mList == null)
+                if(mList == null) {
                     mList = new BaseList(context, R.id.swipeRefreshLayout, mAdapter);
+                    mList.hideFabOnScroll(fab);
+                }
                 mAdapter.notifyDataSetChanged();
             }
         });
