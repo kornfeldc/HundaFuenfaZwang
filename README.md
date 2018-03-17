@@ -1,4 +1,9 @@
-## 1.1.0 (12.03.2018)
+## 1.1.2 (17.03.2018)
+#### Fixed
+* Fix in +/- tip
+* InclTip cant go below topay now
+
+## 1.1.1 (12.03.2018)
 ### Fixed
 * Last item in lists above BottomNavigation not visible
 

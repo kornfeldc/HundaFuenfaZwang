@@ -124,14 +124,14 @@ public class PayActivity extends AuthedActivity {
         avatarInclTipAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                modifyInclTip(ADDAMOUNT);
+                modifyInclTip(true);
             }
         });
         avatarInclTipRemove = (TextView)findViewById(R.id.avatarInclTipRemove);
         avatarInclTipRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                modifyInclTip(ADDAMOUNT*-1);
+                modifyInclTip(false);
             }
         });
         avatarGivenAdd = (TextView)findViewById(R.id.avatarGivenAdd);
@@ -281,17 +281,24 @@ public class PayActivity extends AuthedActivity {
         changedGiven();
     }
 
-    private void modifyInclTip(double amount) {
+    private void modifyInclTip(boolean plus) {
+        if(plus) {
+            if(incltip < Math.floor(incltip)+0.5)
+                incltip = Math.floor(incltip)+0.5;
+            else
+                incltip = Math.ceil(incltip);
+        }
+        else {
+            if(incltip > Math.floor(incltip)+0.5)
+                incltip = Math.floor(incltip)+0.5;
+            else if(incltip == Math.floor(incltip))
+                incltip-=0.5;
+            else
+                incltip = Math.floor(incltip);
+        }
 
-        if(amount > 0 && ceil50(incltip) != incltip)
-            incltip = ceil50(incltip);
-        else
-            incltip += amount;
-
-        incltip = ceil50(incltip);
-
-        if(incltip < 0)
-            incltip = 0;
+        if(incltip < topay)
+            incltip = topay;
         textInclTip.setText(Format.doubleToString(incltip));
         changedInclTip();
     }
