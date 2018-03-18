@@ -144,6 +144,16 @@ public class PersonActivity extends AuthedActivity {
         textFirstName.setText(person.getFirstName());
         textPhoneNr.setText(person.getPhoneNr());
         checkBoxMember.setChecked(person.getMember() != 0);
+
+        if(!person.getLinkedPersonId().isEmpty() && person.getLinkMaster() == 0) {
+            textCredit.setVisibility(View.INVISIBLE);
+            buttonAddCredit.setVisibility(View.GONE);
+        }
+        else {
+            textCredit.setVisibility(View.VISIBLE);
+            buttonAddCredit.setVisibility(View.VISIBLE);
+        }
+
         loadCredit();
     }
 
