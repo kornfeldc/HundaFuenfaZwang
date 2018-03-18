@@ -79,8 +79,8 @@ public class SalesAdapter extends BaseAdapter {
         TextView textArticles = (TextView) holder.layout.findViewById(R.id.textArticles);
 
         if(!sale.getPersonId().isEmpty()) {
-            avatar.setText(Person.getShortName(sale.getPersonLastName(), sale.getPersonFirstName()));
-            textName.setText(Person.getName(sale.getPersonLastName(), sale.getPersonFirstName()));
+            avatar.setText(Person.getShortName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
+            textName.setText(Person.getName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
         }
         else {
             textName.setText(getContext().getResources().getString(R.string.person_direct));

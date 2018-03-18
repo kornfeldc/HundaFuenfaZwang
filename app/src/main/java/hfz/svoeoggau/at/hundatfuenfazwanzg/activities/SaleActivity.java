@@ -182,9 +182,9 @@ public class SaleActivity extends AuthedActivity {
         }
 
         if(!sale.getPersonId().isEmpty()) {
-            getSupportActionBar().setTitle(newSale ? getResources().getString(R.string.new_sale) : Person.getName(sale.getPersonLastName(), sale.getPersonFirstName()) );
-            textName.setText(Person.getName(sale.getPersonLastName(), sale.getPersonFirstName()));
-            textAvatar.setText(Person.getShortName(sale.getPersonLastName(), sale.getPersonFirstName()));
+            getSupportActionBar().setTitle(newSale ? getResources().getString(R.string.new_sale) : Person.getName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()) );
+            textName.setText(Person.getName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
+            textAvatar.setText(Person.getShortName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
 
             if(listenerRegistration != null)
                 listenerRegistration.remove();
@@ -276,6 +276,7 @@ public class SaleActivity extends AuthedActivity {
                 sale.setPersonId("");
                 sale.setPersonLastName("");
                 sale.setPersonFirstName("");
+                sale.setPersonLinkName("");
                 loadUI();
 
                 if(newSale && first) {
@@ -289,6 +290,7 @@ public class SaleActivity extends AuthedActivity {
                 sale.setPersonId(person.getId());
                 sale.setPersonFirstName(person.getFirstName());
                 sale.setPersonLastName(person.getLastName());
+                sale.setPersonLinkName(person.getLinkName());
                 loadUI();
 
                 if(newSale && first) {

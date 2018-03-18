@@ -191,8 +191,8 @@ public class PayActivity extends AuthedActivity {
 
 
         if(!sale.getPersonId().isEmpty()) {
-            textName.setText(Person.getName(sale.getPersonLastName(), sale.getPersonFirstName()));
-            textAvatar.setText(Person.getShortName(sale.getPersonLastName(), sale.getPersonFirstName()));
+            textName.setText(Person.getName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
+            textAvatar.setText(Person.getShortName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
 
             if(person.getCredit() > 0) {
                 hasCredit = true;

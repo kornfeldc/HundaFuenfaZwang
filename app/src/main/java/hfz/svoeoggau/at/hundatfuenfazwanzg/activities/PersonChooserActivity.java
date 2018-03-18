@@ -22,6 +22,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseList;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Format;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
 
@@ -97,10 +98,25 @@ public class PersonChooserActivity extends AuthedActivity {
     }
 
     private void selectPerson(Person person) {
-        Intent ret = new Intent();
-        ret.putExtra("personId", person.isDirect ? "" : Params.setParams(person));
-        setResult(RESULT_OK, ret);
-        finish();
+
+        //check if person is linked to a master
+        if(!person.getLinkedPersonId().isEmpty() && person.getLinkMaster() == 0) {
+            showProgress();
+            Person.getById(person.getLinkedPersonId(), new DbObj.OnLoadSingle() {
+                @Override
+                public void callback(Object obj) {
+                    hideProgress();
+                    if(obj != null)
+                        selectPerson((Person) obj);
+                }
+            });
+        }
+        else {
+            Intent ret = new Intent();
+            ret.putExtra("personId", person.isDirect ? "" : Params.setParams(person));
+            setResult(RESULT_OK, ret);
+            finish();
+        }
     }
 
     private void newPerson() {

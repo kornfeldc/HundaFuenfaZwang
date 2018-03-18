@@ -54,6 +54,7 @@ public class Sale extends DbObj {
     private String articlesText = "";
     private String personLastName = "";
     private String personFirstName = "";
+    private String personLinkName = "";
 
     private List<SaleArticle> articles = new Vector<>();
     private String personId = "";
@@ -138,6 +139,14 @@ public class Sale extends DbObj {
 
     public void setPersonFirstName(String personFirstName) {
         this.personFirstName = personFirstName;
+    }
+
+    public String getPersonLinkName() {
+        return personLinkName;
+    }
+
+    public void setPersonLinkName(String personLinkName) {
+        this.personLinkName = personLinkName;
     }
 
     @Exclude

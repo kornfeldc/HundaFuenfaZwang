@@ -53,6 +53,10 @@ public class Person extends DbObj {
     private String user = "";
     private String mts = "";
 
+    private String linkedPersonId = "";
+    private Integer linkMaster = 0;
+    private String linkName = "";
+
     public String getMts() {
         return mts;
     }
@@ -100,20 +104,43 @@ public class Person extends DbObj {
 
     @Exclude
     public static String getShortName(String lastName, String firstName) {
-        String ret = "";
-        if(LAST_NAME_FIRST && !lastName.isEmpty())
-            ret+=lastName.substring(0,1);
-        if(!firstName.isEmpty())
-            ret += firstName.substring(0,1);
-        if(!LAST_NAME_FIRST && !lastName.isEmpty())
-            ret+=lastName.substring(0,1);
+        return getShortName(lastName, firstName, "");
+    }
 
+    @Exclude
+    public static String getShortName(String lastName, String firstName, String linkName) {
+        String ret = "";
+
+        if(!linkName.equals("")) {
+            String[] split = linkName.split(" ");
+            for(String s : split) {
+                String sf = s.substring(0,1);
+                if("ABCDEFGHIJKLMNOPQRSTUVWXYZ".contains(sf))
+                    ret+=sf;
+            }
+        }
+        else {
+            if (LAST_NAME_FIRST && !lastName.isEmpty())
+                ret += lastName.substring(0, 1);
+            if (!firstName.isEmpty())
+                ret += firstName.substring(0, 1);
+            if (!LAST_NAME_FIRST && !lastName.isEmpty())
+                ret += lastName.substring(0, 1);
+        }
         return ret.toUpperCase();
     }
 
     @Exclude
     public static String getName(String lastName, String firstName) {
-        if(!firstName.isEmpty() && !lastName.isEmpty()) {
+        return getName(lastName, firstName, "");
+    }
+
+    @Exclude
+    public static String getName(String lastName, String firstName, String linkName) {
+
+        if(!linkName.isEmpty())
+            return linkName;
+        else if(!firstName.isEmpty() && !lastName.isEmpty()) {
             if(LAST_NAME_FIRST)
                 return lastName + " " + firstName;
             else
@@ -146,6 +173,30 @@ public class Person extends DbObj {
 
     public void setPhoneNr(String phoneNr) {
         this.phoneNr = phoneNr;
+    }
+
+    public String getLinkedPersonId() {
+        return linkedPersonId;
+    }
+
+    public void setLinkedPersonId(String linkedPersonId) {
+        this.linkedPersonId = linkedPersonId;
+    }
+
+    public Integer getLinkMaster() {
+        return linkMaster;
+    }
+
+    public void setLinkMaster(Integer linkMaster) {
+        this.linkMaster = linkMaster;
+    }
+
+    public String getLinkName() {
+        return linkName;
+    }
+
+    public void setLinkName(String linkName) {
+        this.linkName = linkName;
     }
 
     public Double getCredit() {
@@ -236,36 +287,6 @@ public class Person extends DbObj {
                     }
                 });
     }
-
-    /*public static void load(String search, final OnLoadList oll) {
-        //todo like name
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(COLLECTION)
-                .orderBy("lastName")
-                .orderBy("firstName")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot documentSnapshots) {
-                        List<Object> list = new Vector<>();
-                        if(!documentSnapshots.isEmpty()) {
-                            for(DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
-                                Person person = documentSnapshot.toObject(Person.class);
-                                person.setReference(documentSnapshot.getReference());
-                                list.add(person);
-                            }
-                        }
-                        oll.callback(list);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        oll.callback(null);
-                    }
-                });
-    }
-    */
 
     public boolean matchSearch(String search) {
         search = search.toLowerCase();

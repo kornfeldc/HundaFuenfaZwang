@@ -1,3 +1,7 @@
+## 1.1.3 (18.03.2018)
+#### Added
+* Added linked persons
+
 ## 1.1.2 (17.03.2018)
 #### Fixed
 * Fix in +/- tip
