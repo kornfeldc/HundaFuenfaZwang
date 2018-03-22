@@ -1,9 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinator"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_height="wrap_content"
+    <include layout="@layout/progressbar"></include>
+    <include layout="@layout/pleasewait"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/margin_half">
+
+                    <EditText
+                        android:id="@+id/textDateFrom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="date"
+                        android:hint="@string/date_from"/>
+
+                    <EditText
+                        android:id="@+id/textDateTo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="date"
+                        android:hint="@string/date_to"/>
+
+                </LinearLayout>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radioPersons"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/title_persons" />
+
+                    <RadioButton
+                        android:id="@+id/radioArticles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/title_articles" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+        <!--
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"/>-->
+        <hfz.svoeoggau.at.hundatfuenfazwanzg.holograph.BarGraph
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <hfz.svoeoggau.at.hundatfuenfazwanzg.holograph.PieGraph
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:id="@+id/scrollView"
+            android:layout_weight="1" >
+
+            <hfz.svoeoggau.at.hundatfuenfazwanzg.views.ChartLegend
+                android:id="@+id/chartLegend"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:layout_margin="20dp"
+                app:columns="1"
+                >
+            </hfz.svoeoggau.at.hundatfuenfazwanzg.views.ChartLegend>
+        </ScrollView>
+    </LinearLayout>
+
+    <android:android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonPie"
+        layout_height="wrap_content"
+        layout_width="wrap_content"
         android:layout_width="wrap_content"
-        android:text="statistics"></TextView>
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:src="@drawable/ic_pie_white"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="76dp"
+        android:layout_marginRight="20dp">
+    </android:android.support.design.widget.FloatingActionButton>
+    <android:android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonChart"
+        layout_height="wrap_content"
+        layout_width="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:src="@drawable/ic_chart_white"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="76dp"
+        android:layout_marginRight="20dp">
+    </android:android.support.design.widget.FloatingActionButton>
+</android.support.design.widget.CoordinatorLayout>

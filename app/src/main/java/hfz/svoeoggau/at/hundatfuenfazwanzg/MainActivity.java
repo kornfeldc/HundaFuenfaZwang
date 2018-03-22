@@ -55,7 +55,7 @@ public class MainActivity extends AuthedActivity {
                     changeFragment(fragment);
                     getSupportActionBar().setTitle(R.string.title_statistics);
                     return true;
-                case R.id.navigation_settings:
+                /*case R.id.navigation_settings:
                     fragment = new SettingsFragment();
                     changeFragment(fragment);
                     getSupportActionBar().setTitle(R.string.title_settings);

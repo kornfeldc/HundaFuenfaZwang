@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.classes.ICondition;
 
 /**
  * Created by Christian on 25.02.2018.
@@ -74,17 +75,25 @@ public class BaseList {
     }
 
     public void hideFabOnScroll(final FloatingActionButton fab) {
+        hideFabOnScroll(fab,null);
+    }
+
+    public void hideFabOnScroll(final FloatingActionButton fab, final ICondition condition) {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-                    fab.hide();
-                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-                    fab.show();
+                if(condition == null || !condition.isTrue()) {
+                    if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                        fab.hide();
+                    } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                        fab.show();
+                    }
                 }
+                else
+                    fab.show();
             }
 
         });

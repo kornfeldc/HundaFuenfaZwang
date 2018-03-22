@@ -30,9 +30,11 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.base.AuthedActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseAdapter;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseList;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.classes.ICondition;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Article;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Sale;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.enums.Category;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
 
@@ -132,7 +134,12 @@ public class ArticleChooserActivity extends AuthedActivity {
                 createFiltered();
                 if(mList == null) {
                     mList = new BaseList(context, R.id.swipeRefreshLayout, mAdapter);
-                    mList.hideFabOnScroll(fab);
+                    mList.hideFabOnScroll(fab, new ICondition() {
+                        @Override
+                        public boolean isTrue() {
+                            return addedArticles != null && addedArticles.size() > 0;
+                        }
+                    });
                 }
                 mAdapter.notifyDataSetChanged();
             }
@@ -162,7 +169,7 @@ public class ArticleChooserActivity extends AuthedActivity {
             AbstractMap.SimpleEntry<Article, Integer> entry = new AbstractMap.SimpleEntry<Article, Integer>(article, 1);
             addedArticles.add(entry);
         }
-
+        fab.show();
         refreshAddedArticles();
     }
 

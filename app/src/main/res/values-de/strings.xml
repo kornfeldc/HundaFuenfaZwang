@@ -81,4 +81,7 @@
 
     <string name="no_sale">Für diesen Tag gibt es noch keinen Verkauf.\nTippe auf + um einen anzulegen.</string>
 
+    <string name="date_from">Datum von</string>
+    <string name="date_to">Datum bis</string>
+
 </resources>

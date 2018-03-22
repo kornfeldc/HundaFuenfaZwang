@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ChartLegend">
+        <attr name="columns" format="integer" />
+        <attr name="textSize" format="integer" />
+        <attr name="textPadding" format="integer" />
+        <attr name="textColor" format="color" />
+        <attr name="boxSize" format="integer" />
+    </declare-styleable>
+</resources>

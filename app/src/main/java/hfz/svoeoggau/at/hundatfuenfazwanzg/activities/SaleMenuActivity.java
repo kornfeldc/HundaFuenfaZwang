@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.google.firebase.firestore.ListenerRegistration;
 
+import java.util.Calendar;
 import java.util.Vector;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
@@ -19,6 +20,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseList;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.classes.SaleDay;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Sale;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.DF;
 
 /**
  * Created by Christian on 11.03.2018.
@@ -67,13 +69,25 @@ public class SaleMenuActivity extends AuthedActivity {
 
     private void createDayList() {
         saleDays.clear();
+
+        boolean hasToday = false;
         for(Sale sale : sales) {
             SaleDay day = SaleDay.getDay(saleDays, sale.getDayStr());
             if(day == null) {
                 day = new SaleDay(sale.getDayStr(), 0, 0);
                 saleDays.add(day);
             }
+
+            Calendar cal = DF.StringToCalendar(sale.getDayStr(), "dd.MM.yyyy");
+            if(DF.CompareCalendarDate(cal, DF.Now()) == 0)
+                hasToday=true;
+
             day.addSale(sale);
+        }
+
+        if(!hasToday) {
+            SaleDay day = new SaleDay(DF.CalendarToString("dd.MM.yyyy"),0,0);
+            saleDays.insertElementAt(day,0);
         }
     }
 

@@ -1,3 +1,11 @@
+## 1.1.4 (22.03.2018)
+#### Fixed
+* Fixed Article creation (hangup)
+* Fixed hiding fab in articlechooser
+
+#### Added
+* Added Today line in SaleMenu even if there's no sale for today
+
 ## 1.1.3 (18.03.2018)
 #### Added
 * Added linked persons

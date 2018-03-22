@@ -54,7 +54,6 @@ public class Article extends DbObj {
 
     public void setMts(String mts) {
         this.mts = mts;
-        setMts(DF.CalendarToString(DF.Now(), "dd.MM.yyyy HH:mm:ss"));
     }
 
     public String getUser() {
