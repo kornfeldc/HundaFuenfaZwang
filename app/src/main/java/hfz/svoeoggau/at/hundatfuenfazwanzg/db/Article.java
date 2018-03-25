@@ -47,6 +47,8 @@ public class Article extends DbObj {
     private Integer favorite = 0;
     private String user = "";
     private String mts = "";
+    private Integer isCreditArticle = 0;
+    private Integer isShoppingArticle = 0;
 
     public String getMts() {
         return mts;
@@ -99,6 +101,22 @@ public class Article extends DbObj {
 
     public void setFavorite(Integer favorite) {
         this.favorite = favorite;
+    }
+
+    public Integer getIsCreditArticle() {
+        return isCreditArticle;
+    }
+
+    public void setIsCreditArticle(Integer isCreditArticle) {
+        this.isCreditArticle = isCreditArticle;
+    }
+
+    public Integer getIsShoppingArticle() {
+        return isShoppingArticle;
+    }
+
+    public void setIsShoppingArticle(Integer isShoppingArticle) {
+        this.isShoppingArticle = isShoppingArticle;
     }
 
     public void save(Context context) {

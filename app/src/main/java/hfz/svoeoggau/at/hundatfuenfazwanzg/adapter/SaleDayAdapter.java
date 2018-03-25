@@ -45,6 +45,6 @@ public class SaleDayAdapter extends BaseAdapter {
 
         textPayed.setText(Format.doubleToCurrency(saleDay.getPayed()));
 
-        //showLastItemSpacer(holder,position);
+        showLastItemSpacer(holder,position);
     }
 }

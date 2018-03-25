@@ -50,5 +50,5 @@
 
     </LinearLayout>
 
-    <!--<include layout="@layout/last_item_spacer"/>-->
+    <include layout="@layout/last_item_spacer"/>
 </LinearLayout>

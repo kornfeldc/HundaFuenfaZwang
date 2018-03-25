@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import hfz.svoeoggau.at.hundatfuenfazwanzg.R;
@@ -38,6 +39,7 @@ public class ArticleActivity extends AuthedActivity {
     CheckBox checkBoxFavorite;
     Spinner spinnerCategory;
     FloatingActionButton fab;
+    TextView textEditNotAllowed;
 
 
     @Override
@@ -50,6 +52,7 @@ public class ArticleActivity extends AuthedActivity {
 
         textTitle = (EditText)findViewById(R.id.textTitle);
         textPrice = (EditText)findViewById(R.id.textPrice);
+        textEditNotAllowed = (TextView)findViewById(R.id.textEditNotAllowed);
         checkBoxFavorite = (CheckBox)findViewById(R.id.checkBoxFavorite);
         spinnerCategory = (Spinner)findViewById(R.id.spinnerCategory);
 
@@ -99,6 +102,15 @@ public class ArticleActivity extends AuthedActivity {
         textPrice.setText(Format.doubleToString(article.getPrice()));
         checkBoxFavorite.setChecked(article.getFavorite() != 0);
         spinnerCategory.setSelection(Category.getIndex(article.getCategory()), true);
+
+        if(article.getIsCreditArticle() == 1 || article.getIsShoppingArticle() == 1) {
+            fab.hide();
+            textEditNotAllowed.setVisibility(View.VISIBLE);
+        }
+        else {
+            fab.show();
+            textEditNotAllowed.setVisibility(View.GONE);
+        }
     }
 
     private void save() {
@@ -119,23 +131,28 @@ public class ArticleActivity extends AuthedActivity {
     }
 
     private void askDelete() {
-        final Context context = this;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder
-                .setMessage(R.string.delete_article)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        article.delete();
-                        ((Activity)context).finish();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+        if(article.getIsCreditArticle() == 1 || article.getIsShoppingArticle() == 1) {
+            Toast.makeText(this, getResources().getString(R.string.article_delete_now_allowed), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            final Context context = this;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                    .setMessage(R.string.delete_article)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            article.delete();
+                            ((Activity) context).finish();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                    }
-                }).show();
+                        }
+                    }).show();
+        }
     }
 
     @Override

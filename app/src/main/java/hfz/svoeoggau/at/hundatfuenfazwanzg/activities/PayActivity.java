@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.ListenerRegistration;
 
@@ -21,6 +22,7 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.base.AuthedActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.base.BaseActivity;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Person;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.Sale;
+import hfz.svoeoggau.at.hundatfuenfazwanzg.db.SaleArticle;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.db.base.DbObj;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Format;
 import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Params;
@@ -347,6 +349,23 @@ public class PayActivity extends AuthedActivity {
         sale.setTip(incltip-sale.getSum());
 
         sale.save(this,null);
+
+        double creditToAdd = 0.0;
+        for(SaleArticle saleArticle : sale.getArticles()) {
+            if(saleArticle.getIsCreditArticle() == 1)
+                creditToAdd += saleArticle.getSumPrice();
+        }
+
+        if(creditToAdd > 0) {
+            person.addCredit(creditToAdd);
+            person.save(this,null);
+
+            String msg = getResources().getText(R.string.added_credit).toString();
+            msg = msg.replace("%pers", person.getName());
+            msg = msg.replace("%eur", Format.doubleToCurrency(creditToAdd));
+            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        }
+
         this.setResult(RESULT_OK);
         this.finish();
     }

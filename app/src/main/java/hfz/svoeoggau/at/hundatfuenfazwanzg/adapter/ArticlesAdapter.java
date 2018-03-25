@@ -41,6 +41,6 @@ public class ArticlesAdapter extends BaseAdapter {
         ImageView imageFavorite = (ImageView)holder.layout.findViewById(R.id.imageFavorite);
         imageFavorite.setVisibility(article.getFavorite() != 0 ? View.VISIBLE: View.GONE);
 
-        //showLastItemSpacer(holder,position);
+        showLastItemSpacer(holder,position);
     }
 }

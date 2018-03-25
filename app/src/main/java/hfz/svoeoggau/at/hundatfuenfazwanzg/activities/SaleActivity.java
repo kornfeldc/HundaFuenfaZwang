@@ -267,9 +267,6 @@ public class SaleActivity extends AuthedActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == CHOOSE_PERSON && resultCode == RESULT_OK) {
-
-
-
             String personId = data.getStringExtra("personId");
 
             if(personId == null || personId.isEmpty()) { //directsale

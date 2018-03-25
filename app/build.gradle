@@ -7,8 +7,8 @@ android {
         applicationId "hfz.svoeoggau.at.hundatfuenfazwanzg"
         minSdkVersion 23
         targetSdkVersion 26
-        versionCode 114
-        versionName "1.1.4"
+        versionCode 115
+        versionName "1.1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

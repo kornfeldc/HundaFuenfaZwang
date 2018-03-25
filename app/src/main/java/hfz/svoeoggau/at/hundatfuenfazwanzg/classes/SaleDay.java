@@ -46,7 +46,7 @@ public class SaleDay {
     public void addSale(Sale sale) {
         if(sale.getDayStr().equals(day)) {
             if(sale.getPayed() == 1)
-                payed += sale.getSum() + sale.getTip();
+                payed += sale.getCalculatedSum();
             else
                 topay += sale.getSum();
         }

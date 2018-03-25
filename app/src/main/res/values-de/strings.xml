@@ -42,6 +42,8 @@
     <string name="price">Preis</string>
     <string name="category">Kategorie</string>
     <string name="isFavorite">Favorit</string>
+    <string name="article_delete_now_allowed">Dieser Artikel darf nicht gelöscht werden</string>
+    <string name="article_edit_now_allowed">Dieser Artikel darf nicht bearbeitet werden</string>
 
     <string name="add_article">Artikel hinzufügen</string>
     <string name="sum">Summe</string>
@@ -63,6 +65,7 @@
     <string name="given">gegeben</string>
     <string name="retour">retour</string>
     <string name="remaining_credit">restl. Guth.</string>
+    <string name="added_credit" formatted="false">%pers wurden %eur Guthaben hinzugefügt</string>
 
     <string name="failed_loading_persons">Fehler beim Laden der Personen</string>
     <string name="failed_loading_articles">Fehler beim Laden der Artikel</string>
@@ -83,5 +86,6 @@
 
     <string name="date_from">Datum von</string>
     <string name="date_to">Datum bis</string>
+
 
 </resources>

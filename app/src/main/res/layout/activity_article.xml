@@ -14,6 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/textEditNotAllowed"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorRemove"
+            android:text="@string/article_edit_now_allowed"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin_half">
+        </TextView>
+
         <EditText
             android:id="@+id/textTitle"
             android:layout_width="match_parent"

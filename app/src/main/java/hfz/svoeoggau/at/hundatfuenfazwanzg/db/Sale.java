@@ -93,6 +93,10 @@ public class Sale extends DbObj {
         this.dayStr = dayStr;
     }
 
+    public Double getCalculatedSum() {
+        return sum + tip - usedCredit;
+    }
+
     public Double getSum() {
         return sum;
     }

@@ -43,7 +43,7 @@ public class SalesAdapter extends BaseAdapter {
                 double payedSum = 0.0;
                 for(Sale s : (Vector<Sale>)items) {
                     if(s.getPayed() == 1)
-                        payedSum += s.getSum()+s.getTip();
+                        payedSum += s.getCalculatedSum();
                 }
 
                 if(payedSum > 0) {
@@ -88,13 +88,13 @@ public class SalesAdapter extends BaseAdapter {
         }
 
         textArticles.setText(sale.getArticlesText());
-        textPrice.setText(Format.doubleToCurrency(sale.getSum() + sale.getTip()));
+        textPrice.setText(Format.doubleToCurrency(sale.getCalculatedSum()));
 
         if(sale.getPayed()==1)
             textPrice.setTextColor(context.getResources().getColor(R.color.colorDone));
         else
             textPrice.setTextColor(context.getResources().getColor(R.color.colorOpen));
 
-        //showLastItemSpacer(holder,position);
+        showLastItemSpacer(holder,position);
     }
 }

@@ -1,3 +1,11 @@
+## 1.1.5 (25.03.2018)
+#### Added
+* Added "static" article for buying Credit
+* Adding this article to a sale, add the amount to the credit balance of the person
+
+#### Changed
+* Sale list and Sale menu now calculates the sum WITHOUT the amount payed from credit
+
 ## 1.1.4 (22.03.2018)
 #### Fixed
 * Fixed Article creation (hangup)

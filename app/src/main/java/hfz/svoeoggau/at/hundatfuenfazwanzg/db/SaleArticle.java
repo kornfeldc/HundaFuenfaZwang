@@ -13,6 +13,7 @@ public class SaleArticle {
     double singlePrice;
     double sumPrice;
     double amount;
+    Integer isCreditArticle = 0;
 
     public String getArticleId() {
         return articleId;
@@ -46,6 +47,14 @@ public class SaleArticle {
         this.amount = amount;
     }
 
+    public Integer getIsCreditArticle() {
+        return isCreditArticle;
+    }
+
+    public void setIsCreditArticle(Integer isCreditArticle) {
+        this.isCreditArticle = isCreditArticle;
+    }
+
     public void addOne() {
         amount++;
         sumPrice+=singlePrice;
@@ -71,6 +80,7 @@ public class SaleArticle {
         saleArticle.setAmount(1);
         saleArticle.setSumPrice(article.getPrice());
         saleArticle.setArticleText(article.getTitle());
+        saleArticle.setIsCreditArticle(article.getIsCreditArticle());
         return saleArticle;
     }
 }
