@@ -12,6 +12,7 @@ public class Params {
     private static HashMap<Integer, Object> map = new HashMap<>();
 
     public static String setParams(Object obj) {
+        pos++;
         map.put(pos, obj);
         return String.valueOf(pos);
     }

@@ -168,8 +168,10 @@ public class SalesFragment extends BaseFragment {
             //intent.putExtra("saleId", sale.getReference().getId());
             intent.putExtra("saleId", Params.setParams(sale));
         }
-        else
+        else {
             intent.putExtra("day", day);
+            intent.putExtra("actSales", Params.setParams(sales));
+        }
         startActivity(intent);
     }
 

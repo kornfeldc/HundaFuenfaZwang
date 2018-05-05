@@ -63,6 +63,7 @@ public class SaleActivity extends AuthedActivity {
     private SaleArticlesAdapter mAdapter;
     private BaseList mList;
     private Vector<SaleArticle> saleArticles = new Vector<>();
+    private Vector<Sale> actsales = new Vector<>();
 
     ListenerRegistration listenerRegistration;
 
@@ -138,6 +139,10 @@ public class SaleActivity extends AuthedActivity {
             sale = Sale.newSale(null);
 
             String day = getIntent().getStringExtra("day");
+            String sid = getIntent().getStringExtra("actSales");
+            try {actsales = (Vector<Sale>)Params.getParams(sid);}
+            catch(Exception ex) {}
+
             if(!day.isEmpty()) {
                 Calendar cal = DF.StringToCalendar(day, "dd.MM.yyyy");
                 sale.setDay(cal.getTime());
@@ -284,15 +289,29 @@ public class SaleActivity extends AuthedActivity {
             else {
 
                 Person person = (Person)Params.getParams(personId);
-                sale.setPersonId(person.getId());
-                sale.setPersonFirstName(person.getFirstName());
-                sale.setPersonLastName(person.getLastName());
-                sale.setPersonLinkName(person.getLinkName());
+                boolean foundOpenSale = false;
+                //check if there is already an opened sale for today for this person
+                if(newSale && actsales != null && actsales.size() > 0) {
+                    for(Sale s : actsales) {
+                        if(s.getPersonId().equals(person.getId()) && s.getPayed() == 0) {
+                            sale = s;
+                            foundOpenSale = true;
+                        }
+                    }
+                }
+
+                if(!foundOpenSale) {
+                    sale.setPersonId(person.getId());
+                    sale.setPersonFirstName(person.getFirstName());
+                    sale.setPersonLastName(person.getLastName());
+                    sale.setPersonLinkName(person.getLinkName());
+                }
                 loadUI();
 
                 if(newSale && first) {
                     first=false;
-                    chooseArticle();
+                    if(!foundOpenSale)
+                        chooseArticle();
                 }
                 /*
                 showProgress();

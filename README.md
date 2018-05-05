@@ -1,3 +1,8 @@
+## 1.1.6 (05.05.2018)
+#### Fixed
+* Show "Done" Button when virutal keyboard is opened in pay activity
+* When creating a new sale and choosing a person, check if there is already an opened sale for this person and use this one instead of a new one
+
 ## 1.1.5 (25.03.2018)
 #### Added
 * Added "static" article for buying Credit
