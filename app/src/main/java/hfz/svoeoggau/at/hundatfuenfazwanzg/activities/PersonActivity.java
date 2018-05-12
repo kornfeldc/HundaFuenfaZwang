@@ -172,7 +172,13 @@ public class PersonActivity extends AuthedActivity {
         else {
             person.setPhoneNr(textPhoneNr.getText().toString());
             person.setMember(checkBoxMember.isChecked() ? 1 : 0);
-            person.save(this, new DbObj.OnCallback() {
+
+            Intent ret = new Intent();
+            ret.putExtra("personId", Params.setParams(person));
+            ((Activity)context).setResult(RESULT_OK, ret);
+            ((Activity)context).finish();
+
+            person.save(this, null/*new DbObj.OnCallback() {
                 @Override
                 public void callback() {
                     Intent ret = new Intent();
@@ -180,9 +186,7 @@ public class PersonActivity extends AuthedActivity {
                     ((Activity)context).setResult(RESULT_OK, ret);
                     ((Activity)context).finish();
                 }
-            });
-
-
+            }*/);
         }
     }
 

@@ -172,7 +172,7 @@ public class SalesFragment extends BaseFragment {
             intent.putExtra("day", day);
             intent.putExtra("actSales", Params.setParams(sales));
         }
-        startActivity(intent);
+        startActivityForResult(intent, 100);
     }
 
     @Override
@@ -184,6 +184,8 @@ public class SalesFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 100)
+            listen();
         if(requestCode == CHOOSE_DAY && resultCode == RESULT_OK) {
             day = data.getStringExtra("day");
             listen();

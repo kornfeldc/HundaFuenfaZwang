@@ -49,6 +49,7 @@
     <string name="sum">Summe</string>
     <string name="new_sale">Neuer Verkauf</string>
     <string name="delete_sale">Wollen Sie diesn Verkauf wirklich löschen?</string>
+    <string name="save_sale_changes">Möchten Sie die Änderungen am Verkauf speichern?</string>
 
     <string name="choose_person">Person auswählen</string>
     <string name="top10">Top 10</string>

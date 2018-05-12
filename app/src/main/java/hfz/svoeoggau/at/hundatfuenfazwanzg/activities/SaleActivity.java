@@ -66,6 +66,7 @@ public class SaleActivity extends AuthedActivity {
     private Vector<Sale> actsales = new Vector<>();
 
     ListenerRegistration listenerRegistration;
+    private boolean changes = false;
 
 
     @Override
@@ -161,6 +162,7 @@ public class SaleActivity extends AuthedActivity {
             public void onAdd(String articleId) {
                 if(sale.getPayed() != 1) {
                     sale.addArticle(articleId, 1);
+                    changes = true;
                     loadUI();
                 }
             }
@@ -169,6 +171,7 @@ public class SaleActivity extends AuthedActivity {
             public void onRemove(String articleId) {
                 if(sale.getPayed() != 1) {
                     sale.addArticle(articleId, -1);
+                    changes = true;
                     loadUI();
                 }
             }
@@ -279,6 +282,7 @@ public class SaleActivity extends AuthedActivity {
                 sale.setPersonLastName("");
                 sale.setPersonFirstName("");
                 sale.setPersonLinkName("");
+                changes = true;
                 loadUI();
 
                 if(newSale && first) {
@@ -306,6 +310,7 @@ public class SaleActivity extends AuthedActivity {
                     sale.setPersonLastName(person.getLastName());
                     sale.setPersonLinkName(person.getLinkName());
                 }
+                changes = true;
                 loadUI();
 
                 if(newSale && first) {
@@ -343,6 +348,7 @@ public class SaleActivity extends AuthedActivity {
                     int amount = entry.getValue();
                     Article article = entry.getKey();
                     sale.addArticle(article, amount);
+                    changes = true;
                 }
                 loadUI();
             }
@@ -370,6 +376,29 @@ public class SaleActivity extends AuthedActivity {
 
                     }
                 }).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(changes) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                    .setMessage(R.string.save_sale_changes)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            save();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ((Activity)context).finish();
+                        }
+                    }).show();
+        }
+        else
+            super.onBackPressed();
     }
 
     @Override

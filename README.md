@@ -1,3 +1,10 @@
+## 1.1.7 (12.05.2018)
+#### Added
+* When making changes to a sale and pressing back instead of save a message appear if you want to save the changes
+
+#### Fixed
+* Person Activity did not close after saving when offline
+
 ## 1.1.6 (05.05.2018)
 #### Fixed
 * Show "Done" Button when virutal keyboard is opened in pay activity
