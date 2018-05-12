@@ -48,6 +48,7 @@
     <string name="sum">Sum</string>
     <string name="new_sale">New Sale</string>
     <string name="delete_sale">Do you really want to delete this sale?</string>
+    <string name="save_sale_changes">Do you want to save the changes?</string>
 
     <string name="choose_person">Choose Person</string>
     <string name="top10">Top 10</string>
