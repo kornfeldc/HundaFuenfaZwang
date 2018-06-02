@@ -52,7 +52,7 @@ public class PayActivity extends AuthedActivity {
     private boolean hasCredit = false;
     private boolean creditBiggerThanSum = false;
 
-    private double topay = 0, incltip = 0, given = 0, retour = 0, remainingCredit = 0;
+    private double topay = 0, incltip = 0, given = 0, retour = 0, remainingCredit = 0, buyedCredit = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +188,12 @@ public class PayActivity extends AuthedActivity {
     }
 
     private void loadUI() {
+        buyedCredit = 0.0;
+        for(SaleArticle saleArticle : sale.getArticles()) {
+            if(saleArticle.getIsCreditArticle() == 1)
+                buyedCredit += saleArticle.getSumPrice();
+        }
+
         textCredit.setText("");
         checkUseCredit.setVisibility(View.GONE);
         hasCredit = false;
@@ -198,13 +204,13 @@ public class PayActivity extends AuthedActivity {
             textName.setText(Person.getName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
             textAvatar.setText(Person.getShortName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
 
-            if(person.getCredit() > 0) {
+            if(person.getCredit() +buyedCredit > 0) {
                 hasCredit = true;
                 String credit = getResources().getString(R.string.credit_short) + ": ";
-                credit += Format.doubleToCurrency(person.getCredit());
+                credit += Format.doubleToCurrency(person.getCredit()+buyedCredit);
                 textCredit.setText(credit);
                 checkUseCredit.setVisibility(View.VISIBLE);
-                if(person.getCredit() >= sale.getSum())
+                if((person.getCredit()+buyedCredit) >= sale.getSum())
                     creditBiggerThanSum = true;
             }
         }
@@ -255,10 +261,10 @@ public class PayActivity extends AuthedActivity {
         topay = sale.getSum();
         if(checkUseCredit.isChecked() && creditBiggerThanSum) {
             topay = 0;
-            remainingCredit = person.getCredit() - sale.getSum();
+            remainingCredit = (person.getCredit() + buyedCredit) - sale.getSum();
         }
         else if(checkUseCredit.isChecked()) {
-            topay -= person.getCredit();
+            topay -= person.getCredit() + buyedCredit;
             remainingCredit = 0;
         }
     }
@@ -324,7 +330,7 @@ public class PayActivity extends AuthedActivity {
             retour = given - incltip;
 
             if(checkUseCredit.isChecked() && creditBiggerThanSum) {
-                remainingCredit = person.getCredit() - incltip;
+                remainingCredit = (person.getCredit() + buyedCredit) - incltip;
                 textRemainingCredit.setText(Format.doubleToString(remainingCredit));
             }
 
@@ -338,7 +344,7 @@ public class PayActivity extends AuthedActivity {
     private void save() {
 
         if(person!=null && checkUseCredit.isChecked()) {
-            Double usedCredit = person.getCredit() - remainingCredit;
+            Double usedCredit = (person.getCredit() + buyedCredit) - remainingCredit;
             sale.setUsedCredit(usedCredit);
 
             //modify persons credit

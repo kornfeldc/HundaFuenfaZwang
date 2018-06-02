@@ -3,6 +3,7 @@
 * Message when trying to add a new sale for a day which is not TODAY
 * All unpayed sales are now showed on TODAY
 * Replaced floating action buttons with full sized buttons
+* Handling of bought credit in same sale as bought articles
 
 ## 1.1.7 (12.05.2018)
 #### Added

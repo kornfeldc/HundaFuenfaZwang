@@ -65,6 +65,7 @@ public class SaleActivity extends AuthedActivity {
     private BaseList mList;
     private Vector<SaleArticle> saleArticles = new Vector<>();
     private Vector<Sale> actsales = new Vector<>();
+    private Double buyedCredit = 0.0;
 
     ListenerRegistration listenerRegistration;
     private boolean changes = false;
@@ -202,9 +203,9 @@ public class SaleActivity extends AuthedActivity {
                 @Override
                 public void callback(Object obj) {
                     Person person = (Person)obj;
-                    if(person.getCredit() > 0) {
+                    if(person.getCredit() + buyedCredit > 0) {
                         String credit = getResources().getString(R.string.credit_short) + ": ";
-                        credit += Format.doubleToCurrency(person.getCredit());
+                        credit += Format.doubleToCurrency(person.getCredit() + buyedCredit);
                         textCredit.setText(credit);
                     }
                 }
@@ -226,8 +227,12 @@ public class SaleActivity extends AuthedActivity {
             mList = new BaseList(context, R.id.swipeRefreshLayout, mAdapter);
 
         saleArticles.clear();
+        buyedCredit = 0.0;
         for(SaleArticle saleArticle : sale.getArticles()) {
             saleArticles.add(saleArticle);
+            if(saleArticle.getIsCreditArticle() == 1) {
+                buyedCredit = saleArticle.getSumPrice();
+            }
         }
         mAdapter.notifyDataSetChanged();
     }
