@@ -9,6 +9,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,7 +50,8 @@ public class SalesFragment extends BaseFragment {
     private Vector<Sale> salesFiltered = new Vector<>();
     private CardView cardDay;
     private TextView textDay, textNoSale;
-    private FloatingActionButton fab;
+    //private FloatingActionButton fab;
+    private Button buttonNewSale;
     private String search = "";
     private ListenerRegistration listenerRegistration;
     private String day = DF.CalendarToString();
@@ -67,8 +69,17 @@ public class SalesFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fab = getView().findViewById(R.id.button);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        //fab = getView().findViewById(R.id.button);
+        /*fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSale(null);
+            }
+        });*/
+
+        buttonNewSale = getView().findViewById(R.id.buttonNewSale);
+        buttonNewSale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openSale(null);
@@ -141,7 +152,7 @@ public class SalesFragment extends BaseFragment {
                 createFiltered();
                 if(mList == null) {
                     mList = new BaseList(getActivity(), R.id.swipeRefreshLayout, mAdapter);
-                    mList.hideFabOnScroll(fab);
+                    //mList.hideFabOnScroll(fab);
                 }
 
                 mAdapter.notifyDataSetChanged();

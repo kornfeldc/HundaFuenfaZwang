@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -38,7 +39,8 @@ public class ArticleActivity extends AuthedActivity {
     EditText textTitle, textPrice;
     CheckBox checkBoxFavorite;
     Spinner spinnerCategory;
-    FloatingActionButton fab;
+    //FloatingActionButton fab;
+    Button buttonSave;
     TextView textEditNotAllowed;
 
 
@@ -63,9 +65,8 @@ public class ArticleActivity extends AuthedActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
 
-        fab = (FloatingActionButton)findViewById(R.id.button);
-
-        fab.setOnClickListener(new View.OnClickListener() {
+        buttonSave = findViewById(R.id.buttonSave);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 save();
@@ -104,11 +105,11 @@ public class ArticleActivity extends AuthedActivity {
         spinnerCategory.setSelection(Category.getIndex(article.getCategory()), true);
 
         if(article.getIsCreditArticle() == 1 || article.getIsShoppingArticle() == 1) {
-            fab.hide();
+            buttonSave.setVisibility(View.GONE);
             textEditNotAllowed.setVisibility(View.VISIBLE);
         }
         else {
-            fab.show();
+            buttonSave.setVisibility(View.VISIBLE);
             textEditNotAllowed.setVisibility(View.GONE);
         }
     }

@@ -16,13 +16,14 @@
     <string name="category_sweets">Süßes</string>
 
     <string name="enter_fields">Bitte füllen Sie alle Felder aus</string>
-    <string name="delete">Löschen</string>#
+    <string name="delete">Löschen</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="cancel">Abbrechen</string>
     <string name="please_wait">Bissi Geduld bitte ...</string>
 
     <string name="new_person">Neue Person</string>
+    <string name="save_person">Person speichern</string>
     <string name="person">Person</string>
     <string name="delete_person">Wollen Sie diese Person wirklich löschen?</string>
     <string name="lastname">Nachname</string>
@@ -37,7 +38,8 @@
 
     <string name="article_name">Artikel-Name</string>
     <string name="article">Artikel</string>
-    <string name="new_article">Neuer artikel</string>
+    <string name="new_article">Neuer Artikel</string>
+    <string name="save_article">Artikel speichern</string>
     <string name="delete_article">Wollen Sie diesen Artikel wirklich löschen?</string>
     <string name="price">Preis</string>
     <string name="category">Kategorie</string>
@@ -89,5 +91,7 @@
     <string name="date_to">Datum bis</string>
 
     <string name="wrong_day">Achtung, es ist nicht der heutige Tag ausgewählt, für einen neuen Verkauf wechle bitte auf den heutigen Tag.</string>
+
+    <string name="save">Speichern</string>
 
 </resources>

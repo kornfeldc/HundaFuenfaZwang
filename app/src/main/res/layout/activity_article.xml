@@ -74,6 +74,16 @@
 
     </LinearLayout>
 
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/buttonSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/save"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom"/>
+<!--
     <android:android.support.design.widget.FloatingActionButton
         android:id="@+id/button"
         layout_height="wrap_content"
@@ -87,6 +97,6 @@
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp">
-    </android:android.support.design.widget.FloatingActionButton>
+    </android:android.support.design.widget.FloatingActionButton>-->
 
 </android.support.design.widget.CoordinatorLayout>

@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.firebase.firestore.ListenerRegistration;
 
@@ -31,7 +32,8 @@ public class ArticlesFragment extends BaseFragment {
     private BaseList mList;
     private Vector<Article> articles = new Vector<>();
     private Vector<Article> articlesFiltered = new Vector<>();
-    private FloatingActionButton fab;
+    //private FloatingActionButton fab;
+    private Button buttonNewArticle;
     private String search = "";
     private ListenerRegistration listenerRegistration;
 
@@ -47,8 +49,8 @@ public class ArticlesFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fab = getView().findViewById(R.id.button);
-        fab.setOnClickListener(new View.OnClickListener() {
+        buttonNewArticle = getView().findViewById(R.id.buttonNewArticle);
+        buttonNewArticle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openArticle(null);
@@ -80,7 +82,7 @@ public class ArticlesFragment extends BaseFragment {
                 hideProgress();
                 if(mList == null) {
                     mList = new BaseList(getActivity(), R.id.swipeRefreshLayout, mAdapter);
-                    mList.hideFabOnScroll(fab);
+                    //mList.hideFabOnScroll(fab);
                 }
 
                 mAdapter.notifyDataSetChanged();

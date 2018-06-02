@@ -9,6 +9,7 @@
     <color name="colorOpen">#EF6C00</color>
     <color name="colorDone">#00C853</color>
     <color name="colorRemove">#C62828</color>
+    <color name="colorGray">#BBBBBB</color>
 
     <color name="stat_1">#00bcd4</color>
     <color name="stat_2">#ffc107</color>

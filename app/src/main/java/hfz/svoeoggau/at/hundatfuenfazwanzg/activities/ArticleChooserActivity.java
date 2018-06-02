@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -53,7 +54,8 @@ public class ArticleChooserActivity extends AuthedActivity {
     private Context context;
     private LinearLayout layoutAdded;
     private TextView textSelectedArticles, textDelete;
-    private FloatingActionButton fab;
+    //private FloatingActionButton fab;
+    private Button buttonSave;
 
     private Vector<AbstractMap.SimpleEntry<Article, Integer>> addedArticles = new Vector<>();
     private ListenerRegistration listenerRegistration;
@@ -76,8 +78,8 @@ public class ArticleChooserActivity extends AuthedActivity {
                 refreshAddedArticles();
             }
         });
-        fab = (FloatingActionButton)findViewById(R.id.button);
-        fab.setOnClickListener(new View.OnClickListener() {
+        buttonSave = findViewById(R.id.buttonSave);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectArticles();
@@ -134,12 +136,12 @@ public class ArticleChooserActivity extends AuthedActivity {
                 createFiltered();
                 if(mList == null) {
                     mList = new BaseList(context, R.id.swipeRefreshLayout, mAdapter);
-                    mList.hideFabOnScroll(fab, new ICondition() {
+                    /*mList.hideFabOnScroll(fab, new ICondition() {
                         @Override
                         public boolean isTrue() {
                             return addedArticles != null && addedArticles.size() > 0;
                         }
-                    });
+                    });*/
                 }
                 mAdapter.notifyDataSetChanged();
             }
@@ -169,13 +171,13 @@ public class ArticleChooserActivity extends AuthedActivity {
             AbstractMap.SimpleEntry<Article, Integer> entry = new AbstractMap.SimpleEntry<Article, Integer>(article, 1);
             addedArticles.add(entry);
         }
-        fab.show();
+        buttonSave.setVisibility(View.VISIBLE);
         refreshAddedArticles();
     }
 
     private void refreshAddedArticles() {
         if(addedArticles.size() > 0) {
-            fab.setVisibility(View.VISIBLE);
+            buttonSave.setVisibility(View.VISIBLE);
             layoutAdded.setVisibility(View.VISIBLE);
             String text = "";
             for(AbstractMap.SimpleEntry<Article, Integer> entry : addedArticles) {

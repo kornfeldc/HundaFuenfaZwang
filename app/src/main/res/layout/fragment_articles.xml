@@ -10,12 +10,20 @@
     <include layout="@layout/pleasewait"></include>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:paddingBottom="60dp">
         <include layout="@layout/baselist"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/buttonNewArticle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/new_article"/>
     </LinearLayout>
 
-    <android:android.support.design.widget.FloatingActionButton
+    <!--<android:android.support.design.widget.FloatingActionButton
         android:id="@+id/button"
         layout_height="wrap_content"
         layout_width="wrap_content"
@@ -28,5 +36,5 @@
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="76dp"
         android:layout_marginRight="20dp">
-    </android:android.support.design.widget.FloatingActionButton>
+    </android:android.support.design.widget.FloatingActionButton>-->
 </android.support.design.widget.CoordinatorLayout>

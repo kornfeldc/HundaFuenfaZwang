@@ -104,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/activity_horizontal_margin">
+            android:layout_marginTop="8dp">
 
             <LinearLayout
                 android:id="@+id/layoutToPay"
@@ -312,7 +312,26 @@
         </LinearLayout>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom">
 
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/buttonPay"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorDone"
+            android:text="@string/payed"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom"/>
+
+    </LinearLayout>
+<!--
     <android:android.support.design.widget.FloatingActionButton
         android:id="@+id/button"
         layout_height="wrap_content"
@@ -328,4 +347,5 @@
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp">
     </android:android.support.design.widget.FloatingActionButton>
+    -->
 </android.support.design.widget.CoordinatorLayout>

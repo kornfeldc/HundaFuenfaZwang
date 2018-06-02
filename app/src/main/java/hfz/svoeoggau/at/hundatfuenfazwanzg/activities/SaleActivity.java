@@ -52,7 +52,8 @@ public class SaleActivity extends AuthedActivity {
     TextView textAvatar, textName, textSum, textDay, textCredit;
     Button buttonAddArticle;
     CardView cardPerson;
-    FloatingActionButton fabOk, fabPay;
+    //FloatingActionButton fabOk, fabPay;
+    Button buttonSave, buttonPay;
 
     private Context context;
 
@@ -85,16 +86,16 @@ public class SaleActivity extends AuthedActivity {
         textDay = (TextView)findViewById(R.id.textDay);
         textCredit = (TextView)findViewById(R.id.textCredit);
         buttonAddArticle = (Button)findViewById(R.id.buttonAddArticle);
-        fabOk = (FloatingActionButton)findViewById(R.id.buttonOk);
-        fabOk.setOnClickListener(new View.OnClickListener() {
+        buttonSave = findViewById(R.id.buttonSave);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 save();
             }
         });
 
-        fabPay = (FloatingActionButton)findViewById(R.id.buttonPay);
-        fabPay.setOnClickListener(new View.OnClickListener() {
+        buttonPay = findViewById(R.id.buttonPay);
+        buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pay();
@@ -183,8 +184,8 @@ public class SaleActivity extends AuthedActivity {
         textCredit.setText("");
 
         if(sale.getPayed() == 1) {
-            fabPay.setVisibility(View.GONE);
-            fabOk.setVisibility(View.GONE);
+            buttonSave.setVisibility(View.GONE);
+            buttonPay.setVisibility(View.GONE);
             buttonAddArticle.setVisibility(View.GONE);
             textSum.setTextColor(getResources().getColor(R.color.colorDone));
         }

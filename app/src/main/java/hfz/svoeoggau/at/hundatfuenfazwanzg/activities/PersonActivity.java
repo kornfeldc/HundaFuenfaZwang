@@ -44,7 +44,7 @@ public class PersonActivity extends AuthedActivity {
     TextView textCredit;
     CheckBox checkBoxMember;
     Button buttonAddCredit;
-    FloatingActionButton fab;
+    Button buttonSave;
     ImageView imageSwap;
 
     private Context context;
@@ -65,9 +65,9 @@ public class PersonActivity extends AuthedActivity {
         textCredit = (TextView)findViewById(R.id.textCredit);
         buttonAddCredit = (Button)findViewById(R.id.buttonAddCredit);
         imageSwap = (ImageView)findViewById(R.id.imageSwap);
-        fab = (FloatingActionButton)findViewById(R.id.button);
+        buttonSave = findViewById(R.id.buttonSave);
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 save();

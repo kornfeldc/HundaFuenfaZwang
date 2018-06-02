@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -38,7 +39,8 @@ public class PayActivity extends AuthedActivity {
     Sale sale;
     Person person;
     private Context context;
-    FloatingActionButton fab;
+    //FloatingActionButton fab;
+    Button buttonPay;
     TextView textAvatar, textName, textDay, textCredit, textSum;
     CardView cardPerson;
     CheckBox checkUseCredit;
@@ -151,8 +153,8 @@ public class PayActivity extends AuthedActivity {
             }
         });
 
-        fab = (FloatingActionButton)findViewById(R.id.button);
-        fab.setOnClickListener(new View.OnClickListener() {
+        buttonPay = findViewById(R.id.buttonPay);
+        buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sale.setPayed(1);

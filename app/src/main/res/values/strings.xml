@@ -22,6 +22,7 @@
     <string name="please_wait">Please wait ...</string>
 
     <string name="new_person">New Person</string>
+    <string name="save_person">Person speichern</string>
     <string name="person">Person</string>
     <string name="delete_person">Do you really want to delete this person?</string>
     <string name="lastname">Lastname</string>
@@ -37,6 +38,7 @@
     <string name="article_name">Article-Name</string>
     <string name="article">Article</string>
     <string name="new_article">New Article</string>
+    <string name="save_article">Artikel speichern</string>
     <string name="delete_article">Do you really want to delete this article?</string>
     <string name="price">Price</string>
     <string name="category">Category</string>
@@ -88,4 +90,6 @@
     <string name="date_to">Date to</string>
 
     <string name="wrong_day">Warning, the wrong day is selected, please choose the correct day for adding a new sale</string>
+
+    <string name="save">Save</string>
 </resources>

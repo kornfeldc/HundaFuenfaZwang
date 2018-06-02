@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.ListenerRegistration;
@@ -36,7 +37,8 @@ public class PersonsFragment extends BaseFragment {
     private BaseList mList;
     private Vector<Person> persons = new Vector<>();
     private Vector<Person> personsFiltered = new Vector<>();
-    private FloatingActionButton fab;
+    //private FloatingActionButton fab;
+    private Button buttonNewPerson;
     private String search = "";
     private ListenerRegistration listenerRegistration;
 
@@ -51,8 +53,8 @@ public class PersonsFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fab = getView().findViewById(R.id.button);
-        fab.setOnClickListener(new View.OnClickListener() {
+        buttonNewPerson = getView().findViewById(R.id.buttonNewPerson);
+        buttonNewPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openPerson(null);
@@ -83,7 +85,7 @@ public class PersonsFragment extends BaseFragment {
                 createFiltered();
                 if(mList == null) {
                     mList = new BaseList(getActivity(), R.id.swipeRefreshLayout, mAdapter);
-                    mList.hideFabOnScroll(fab);
+                    //mList.hideFabOnScroll(fab);
                 }
 
                 mAdapter.notifyDataSetChanged();
