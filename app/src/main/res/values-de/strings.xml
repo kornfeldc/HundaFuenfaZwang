@@ -88,5 +88,6 @@
     <string name="date_from">Datum von</string>
     <string name="date_to">Datum bis</string>
 
+    <string name="wrong_day">Achtung, es ist nicht der heutige Tag ausgewählt, für einen neuen Verkauf wechle bitte auf den heutigen Tag.</string>
 
 </resources>

@@ -86,4 +86,6 @@
 
     <string name="date_from">Date from</string>
     <string name="date_to">Date to</string>
+
+    <string name="wrong_day">Warning, the wrong day is selected, please choose the correct day for adding a new sale</string>
 </resources>

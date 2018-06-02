@@ -350,10 +350,13 @@ public class Sale extends DbObj {
         return search.equals("") || getPersonLastName().toLowerCase().indexOf(search) >= 0 || getPersonFirstName().toLowerCase().indexOf(search) >= 0;
     }
 
-    public static ListenerRegistration listen(final Vector<Sale> actList, String day,  final Context context, final OnListChanged listChanged) {
+    public static ListenerRegistration listen(final Vector<Sale> actList, /*String day,  */final Context context, final OnListChanged listChanged) {
+
+        //boolean today = DF.CalendarToString().equals(day);
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ListenerRegistration reg = db.collection(COLLECTION)
-                .whereEqualTo("dayStr", day)
+                //.whereEqualTo("dayStr", day)
                 .orderBy("payed")
                 .orderBy(Person.LAST_NAME_FIRST ? "personLastName" : "personFirstName")
                 .orderBy(Person.LAST_NAME_FIRST ? "personFirstName" : "personLastName")

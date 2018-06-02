@@ -134,7 +134,7 @@ public class SalesFragment extends BaseFragment {
 
         textDay.setText(day);
 
-        listenerRegistration = Sale.listen(sales, day, getContext(), new Sale.OnListChanged() {
+        listenerRegistration = Sale.listen(sales, getContext(), new Sale.OnListChanged() {
             @Override
             public void callback() {
                 hideProgress();
@@ -152,7 +152,11 @@ public class SalesFragment extends BaseFragment {
     private void createFiltered() {
         salesFiltered.clear();
         for(Sale s : sales) {
-            if(s.matchSearch(search))
+            if(s.matchSearch(search) &&
+                    (
+                            s.getDayStr().equals(day) || (day.equals(DF.CalendarToString()) && s.getPayed() == 0)
+                    )
+                )
                 salesFiltered.add(s);
         }
 
@@ -163,16 +167,20 @@ public class SalesFragment extends BaseFragment {
     }
 
     private void openSale(Sale sale) {
-        Intent intent = new Intent(getActivity(), SaleActivity.class);
-        if(sale != null) {
-            //intent.putExtra("saleId", sale.getReference().getId());
-            intent.putExtra("saleId", Params.setParams(sale));
-        }
+
+        if(sale == null && !day.equals(DF.CalendarToString()))  //wrong day for new sale
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.wrong_day), Toast.LENGTH_LONG).show();
         else {
-            intent.putExtra("day", day);
-            intent.putExtra("actSales", Params.setParams(sales));
+            Intent intent = new Intent(getActivity(), SaleActivity.class);
+            if (sale != null) {
+                //intent.putExtra("saleId", sale.getReference().getId());
+                intent.putExtra("saleId", Params.setParams(sale));
+            } else {
+                intent.putExtra("day", day);
+                intent.putExtra("actSales", Params.setParams(sales));
+            }
+            startActivityForResult(intent, 100);
         }
-        startActivityForResult(intent, 100);
     }
 
     @Override

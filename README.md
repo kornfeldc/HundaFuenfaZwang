@@ -1,3 +1,8 @@
+## 1.1.8 (02.06.2018)
+#### Changed
+* Message when trying to add a new sale for a day which is not TODAY
+* All unpayed sales are now showed on TODAY
+
 ## 1.1.7 (12.05.2018)
 #### Added
 * When making changes to a sale and pressing back instead of save a message appear if you want to save the changes
