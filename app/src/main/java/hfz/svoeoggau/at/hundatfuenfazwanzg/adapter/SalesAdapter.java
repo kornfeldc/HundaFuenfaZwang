@@ -19,12 +19,20 @@ import hfz.svoeoggau.at.hundatfuenfazwanzg.helpers.Format;
 
 public class SalesAdapter extends BaseAdapter {
 
-    public SalesAdapter(Context context, int layoutResource, Vector<?> items) {
+    public String dayStr = "";
+
+    public SalesAdapter(Context context, int layoutResource, Vector<?> items, String dayStr) {
         super(context, layoutResource, items);
+        this.dayStr = dayStr;
     }
 
-    public SalesAdapter(Context context, int layoutResource, Vector<?> items, IOnItemClickListener onItemClickListener) {
+    public SalesAdapter(Context context, int layoutResource, Vector<?> items, String dayStr, IOnItemClickListener onItemClickListener) {
         super(context, layoutResource, items, onItemClickListener);
+        this.dayStr = dayStr;
+    }
+
+    public void setDayStr(String dayStr) {
+        this.dayStr = dayStr;
     }
 
     @Override
@@ -77,15 +85,23 @@ public class SalesAdapter extends BaseAdapter {
         TextView textName = (TextView) holder.layout.findViewById(R.id.textName);
         TextView textPrice = (TextView) holder.layout.findViewById(R.id.textPrice);
         TextView textArticles = (TextView) holder.layout.findViewById(R.id.textArticles);
+        TextView textDay = (TextView) holder.layout.findViewById(R.id.textDay);
 
         if(!sale.getPersonId().isEmpty()) {
-            avatar.setText(Person.getShortName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
             textName.setText(Person.getName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
+            avatar.setText(Person.getShortName(sale.getPersonLastName(), sale.getPersonFirstName(), sale.getPersonLinkName()));
         }
         else {
             textName.setText(getContext().getResources().getString(R.string.person_direct));
             avatar.setText("D");
         }
+
+        if(!sale.getDayStr().equals(dayStr)) {
+            textDay.setVisibility(View.VISIBLE);
+            textDay.setText(sale.getDayStr());
+        }
+        else
+            textDay.setVisibility(View.GONE);
 
         textArticles.setText(sale.getArticlesText());
         textPrice.setText(Format.doubleToCurrency(sale.getCalculatedSum()));

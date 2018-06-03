@@ -66,6 +66,13 @@
                 android:textSize="@dimen/fontsize_h2"
                 android:maxLines="1" />
             <TextView
+                android:id="@+id/textDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/fontsize_h4"
+                android:maxLines="1" />
+            <TextView
                 android:id="@+id/textArticles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -117,7 +117,7 @@ public class SalesFragment extends BaseFragment {
             }
         });
 
-        mAdapter = new SalesAdapter(getActivity(), R.layout.listitem_sale, salesFiltered, new BaseAdapter.IOnItemClickListener() {
+        mAdapter = new SalesAdapter(getActivity(), R.layout.listitem_sale, salesFiltered, day, new BaseAdapter.IOnItemClickListener() {
             @Override
             public <T> void onItemClick(View view, int position, T item) {
                 openSale(salesFiltered.get(position));
@@ -207,6 +207,7 @@ public class SalesFragment extends BaseFragment {
             listen();
         if(requestCode == CHOOSE_DAY && resultCode == RESULT_OK) {
             day = data.getStringExtra("day");
+            mAdapter.setDayStr(day);
             listen();
         }
         else

@@ -1,3 +1,7 @@
+## 1.1.9 (03.06.2018)
+#### Added
+* Display date under person name on sales which are displayed because they were left openend
+
 ## 1.1.8 (02.06.2018)
 #### Changed
 * Message when trying to add a new sale for a day which is not TODAY
